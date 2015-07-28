@@ -1,0 +1,22 @@
+{
+  "name": "agentx",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "make test"
+  },
+  "bin": {
+    "agentx": "./client.js"
+  },
+  "author": "Jackson Tian",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^0.7.2",
+    "debug": "*"
+  },
+  "devDependencies": {
+    "expect.js": "*",
+    "istanbul": "*",
+    "mocha": "*"
+  }
+}
