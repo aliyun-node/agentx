@@ -12,7 +12,9 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^0.7.2",
-    "debug": "*"
+    "debug": "*",
+    "slice-file": "*",
+    "through2": "^0.6.5"
   },
   "devDependencies": {
     "expect.js": "*",
