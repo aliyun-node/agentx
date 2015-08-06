@@ -35,7 +35,7 @@ agentx需要一个配置文件来进行使用，agentx仅会在配置指定下�
 $ nohup agentx config.json &
 ```
 
-agentx将以常驻进程的方式执行。部署完成后，请访问<http://alinode.aliyun.com/dashboard>查看您的应用详情。如果一切正常，稍等片刻即可收到你的应用性能数据。
+agentx将以常驻进程的方式执行。部署完成后，请访问<http://alinode.aliyun.com/dashboard>查看您的应用详情。如果一切正常，稍等片刻（1分钟）即可收到你的应用性能数据。
 
 ## License
 The agentx is released under the MIT license.
