@@ -14,7 +14,8 @@
     "ws": "^0.7.2",
     "debug": "*",
     "slice-file": "*",
-    "through2": "^0.6.5"
+    "through2": "^0.6.5",
+    "split2": "^0.2.1",
   },
   "devDependencies": {
     "expect.js": "*",
