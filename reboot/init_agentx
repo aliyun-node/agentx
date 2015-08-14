@@ -1,0 +1,85 @@
+#!/bin/bash
+### BEGIN INIT INFO
+# Provides:          agentx
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: agentx update.
+# Description:       agentx client.
+### END INIT INFO
+
+SA_DIR="/usr/local/agentx"
+
+if [ `id -u` -ne "0" ]; then
+  echo "ERROR: Permission denied." 1>&2
+  exit 1
+fi
+
+start() {
+  $SA_DIR/startagentx
+}
+
+
+stop() {
+  echo ''
+  echo '****************************************************'
+  echo '*  The following processes will be killed.         *'
+  echo '*  CTRL+C to cancel it, any other key to proceed.  *'
+  echo '****************************************************'
+  echo ''
+  ps -ef|grep agentx|grep -v sudo|grep -v grep |grep -v init.d
+  echo ''
+  echo ''
+  read yes
+  kill -9 `ps -ef|grep agentx|grep -v sudo|grep -v grep |grep -v init.d|awk '{print $2}'`
+}
+
+
+status() {
+  if [ -n "$(ps -ef|grep agentx|grep -v sudo|grep -v grep |grep -v init.d)" ]; then
+    echo "Agentx is running"
+  else
+    echo "Agentx stopped"
+  fi
+}
+
+var=0
+path="/etc/debian_version"
+if [ `uname -n` = "debian" ]; then
+  if [ -f "$path" ]; then
+    var=`awk -F. '{print $1}' $path`
+  fi
+fi
+
+case "$1" in
+  start)
+    start
+    sleep 1
+    status
+  ;;
+
+  stop)
+    stop
+    status
+  ;;
+
+  restart)
+    stop
+    status
+    echo "Agentx restarting..."
+    sleep 1
+    start
+    status
+  ;;
+
+  status)
+    status
+  ;;
+
+  *)
+    echo $"Usage: $0 {start|stop|restart|status}"
+    exit 1
+  ;;
+
+esac
