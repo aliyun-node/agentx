@@ -7,19 +7,27 @@ var cfork = require('cfork');
 var util = require('util');
 var clientPath = path.join(__dirname, 'client.js');
 
-var getConfigPath = function () {
-  var argv = process.argv.slice(2);
-  if (argv.length < 1) {
-    console.log('请指定配置文件, 用法:');
-    console.log('  agentx <config.json>');
-    process.exit(1);
-  }
-  return path.resolve(argv[0]);
+var argv = process.argv.slice(2);
+
+var printUsage = function () {
+  console.log('参数错误。用法示例:');
+  console.log('  agentx <config.json>');
+  console.log('  agentx -v');
 };
+
+if (argv.length < 1) {
+  printUsage();
+  process.exit(1);
+}
+
+if (argv[0] === '-v') {
+  console.log(require('./package.json').version);
+  process.exit(0);
+}
 
 cfork({
   exec: clientPath,
-  args: [getConfigPath()],
+  args: [argv[0]],
   count: 1
 })
 .on('fork', function (client) {

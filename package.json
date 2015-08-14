@@ -6,7 +6,7 @@
     "test": "make test"
   },
   "bin": {
-    "agentx": "./startClient.js"
+    "agentx": "./start_client.js"
   },
   "author": "Jackson Tian",
   "license": "MIT",

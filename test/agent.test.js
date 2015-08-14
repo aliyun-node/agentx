@@ -44,9 +44,12 @@ describe('/lib/agent', function () {
     var agent = new Agent({
       server: 'localhost:8989',
       appid: 1,
-      secret: '2'
+      secret: '2',
+      logdir: '/tmp/',
+      cmddir: '/tmp/'
     });
 
     agent.run();
+    done();
   });
 });
