@@ -45,7 +45,8 @@ if (argv[0] === '-v') {
 
 process.on('uncaughtException', function (err) {
   console.log(new Date());
-  console.log(err);
+  console.log(err.message);
+  console.log(err.stack);
   process.exit(-1);
 });
 
