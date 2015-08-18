@@ -12,8 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^0.7.2",
-    "co": "~4.5.4",
-    "thunkify": "*",
     "debug": "*",
     "through2": "^0.6.5",
     "split2": "^0.2.1"
