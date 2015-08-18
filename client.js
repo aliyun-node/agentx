@@ -16,7 +16,7 @@ if (argv.length < 1) {
   process.exit(1);
 }
 
-var readConfig = function() {
+var readConfig = function () {
   var confPath = path.resolve(argv[0]);
   var cfg = require(confPath);
 
@@ -42,6 +42,13 @@ if (argv[0] === '-v') {
   console.log(require('./package.json').version);
   process.exit(0);
 }
+
+process.on('uncaughtException', function (err) {
+  console.log(new Date());
+  console.log(err.message);
+  console.log(err.stack);
+  process.exit(-1);
+});
 
 var Agent = require('./lib/agent');
 var agent = new Agent(readConfig());
