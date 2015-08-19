@@ -7,10 +7,10 @@ var Connection = require('../lib/connection');
 describe('/lib/connection', function () {
   var wss;
   before(function () {
-    wss = new WebSocketServer({ port: 8080 });
+    wss = new WebSocketServer({ port: 8089 });
     wss.on('connection', function connection(ws) {
       ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
+        expect(message).to.be.ok();
         ws.close();
       });
 
@@ -27,7 +27,7 @@ describe('/lib/connection', function () {
   });
 
   it('new Connection should ok', function (done) {
-    var conn = new Connection('ws://localhost:8080/');
+    var conn = new Connection('ws://localhost:8089/');
     var count = 0;
     conn.on('open', function () {
       count++;
