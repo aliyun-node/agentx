@@ -12,7 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^0.7.2",
-    "cfork": "~1.2.3",
+    "nounou": "1.0.0",
     "debug": "*",
     "through2": "^0.6.5",
     "split2": "^0.2.1"

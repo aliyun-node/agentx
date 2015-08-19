@@ -20,6 +20,7 @@ var readConfig = function(confPath) {
     console.log(JSON.stringify(cfg, null, 2));
     console.log('请检查配置文件, 确保以下参数配置：');
     console.log('  server, appid, secret, cmddir, logdir, heartbeatInterval, reconnectDelay, reportInterval');
+    process.send({type: 'suicide'});
     process.exit(1);
   }
 
