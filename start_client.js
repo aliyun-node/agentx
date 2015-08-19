@@ -3,7 +3,7 @@
 'use strict';
 
 var path = require('path');
-var cfork = require('cfork');
+var nounou = require('nounou');
 var util = require('util');
 var clientPath = path.join(__dirname, 'client.js');
 
@@ -25,7 +25,7 @@ if (argv[0] === '-v') {
   process.exit(0);
 }
 
-cfork({
+nounou({
   exec: clientPath,
   args: [argv[0]],
   count: 1
@@ -34,13 +34,12 @@ cfork({
   console.log('[%s] [client:%d] new client start', Date(), client.process.pid);
 })
 .on('disconnect', function (client) {
-  console.error('[%s] [daemon:%s] client:%s disconnect, suicide: %s, state: %s.',
-    Date(), process.pid, client.process.pid, client.suicide, client.state);
+  console.error('[%s] [%s] client:%s disconnect, suicide: %s.',
+    Date(), process.pid, client.process.pid, client.suicide);
 })
-.on('exit', function (client, code, signal) {
-  var exitCode = client.process.exitCode;
-  var err = new Error(util.format('client %s died (code: %s, signal: %s, suicide: %s, state: %s)',
-    client.process.pid, exitCode, signal, client.suicide, client.state));
+.on('unexpectedExit', function (client, code, signal) {
+  var err = new Error(util.format('client %s died (code: %s, signal: %s)',
+    client.process.pid, code, signal));
   err.name = 'ClientDiedError';
-  console.error('[%s] [daemon:%s] client exit: %s', Date(), process.pid, err.stack);
+  console.error('[%s] [%s] client exit: %s', Date(), process.pid, err.stack);
 });
