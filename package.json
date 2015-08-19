@@ -6,12 +6,13 @@
     "test": "make test"
   },
   "bin": {
-    "agentx": "./client.js"
+    "agentx": "./startClient.js"
   },
   "author": "Jackson Tian",
   "license": "MIT",
   "dependencies": {
     "ws": "^0.7.2",
+    "cfork": "~1.2.3",
     "debug": "*",
     "through2": "^0.6.5",
     "split2": "^0.2.1"
