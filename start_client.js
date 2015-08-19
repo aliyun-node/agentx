@@ -25,21 +25,20 @@ if (argv[0] === '-v') {
   process.exit(0);
 }
 
-nounou({
-  exec: clientPath,
+nounou(clientPath, {
   args: [argv[0]],
   count: 1
 })
 .on('fork', function (client) {
-  console.log('[%s] [client:%d] new client start', Date(), client.process.pid);
+  console.log('[%s] [client:%d] new client start', Date(), client.pid);
 })
 .on('disconnect', function (client) {
   console.error('[%s] [%s] client:%s disconnect, suicide: %s.',
-    Date(), process.pid, client.process.pid, client.suicide);
+    Date(), process.pid, client.pid, client.suicide);
 })
 .on('unexpectedExit', function (client, code, signal) {
   var err = new Error(util.format('client %s died (code: %s, signal: %s)',
-    client.process.pid, code, signal));
+    client.pid, code, signal));
   err.name = 'ClientDiedError';
   console.error('[%s] [%s] client exit: %s', Date(), process.pid, err.stack);
 });
