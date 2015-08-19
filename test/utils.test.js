@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var expect = require('expect.js');
 var utils = require('../lib/utils');
 
@@ -22,11 +23,25 @@ describe('/lib/utils', function () {
   });
 
   it('exec should ok', function (done) {
-    utils.execCommand('echo hehe', {}, function (err, stdout, stderr) {
+    var sh = path.join(__dirname, "cmddir", "echo.sh");
+    utils.execCommand(sh, ['hehe'], {}, function (err, stdout, stderr) {
       expect(err).to.not.be.ok();
       expect(stdout).to.be('hehe' + require('os').EOL);
       expect(stderr).to.be('');
       done();
     });
+  });
+
+  it('getYYYYMMDD should ok', function () {
+    var date = new Date();
+    date.setFullYear(1987);
+    date.setMonth(9);
+    date.setDate(12);
+    expect(utils.getYYYYMMDD(date)).to.be('19871012');
+    var date = new Date();
+    date.setFullYear(1987);
+    date.setMonth(0);
+    date.setDate(1);
+    expect(utils.getYYYYMMDD(date)).to.be('19870101');
   });
 });
