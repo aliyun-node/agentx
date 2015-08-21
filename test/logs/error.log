@@ -1,0 +1,53 @@
+2014-07-07 15:11:26.421 nodejs.ErrorException: DUPLICATEError: test error (127.0.0.1)
+    at Object.<anonymous> (/Users/deadhorse/git/error-formatter/test/index.test.js:15:11)
+    at Module._compile (module.js:449:26)
+    at Object.Module._extensions..js (module.js:467:10)
+    at Module.load (module.js:349:32)
+    at Function.Module._load (module.js:305:12)
+    at Module.require (module.js:357:17)
+    at require (module.js:373:17)
+    at /Users/deadhorse/git/error-formatter/node_modules/mocha/lib/mocha.js:172:27
+    at Array.forEach (native)
+    at Mocha.loadFiles (/Users/deadhorse/git/error-formatter/node_modules/mocha/lib/mocha.js:169:14)
+    at Mocha.run (/Users/deadhorse/git/error-formatter/node_modules/mocha/lib/mocha.js:356:31)
+    at Object.<anonymous> (/Users/deadhorse/git/error-formatter/node_modules/mocha/bin/_mocha:366:16)
+    at Module._compile (module.js:449:26)
+    at Object.Module._extensions..js (module.js:467:10)
+    at Module.load (module.js:349:32)
+    at Function.Module._load (module.js:305:12)
+    at Function.Module.runMain (module.js:490:10)
+    at startup (node.js:124:16)
+    at node.js:803:3
+pid: 91000
+domainThrown: false
+Host: dead-horsedeMacBook-Pro.local
+URL: /error
+Data: {"foo":"bar"}
+2014-07-07 15:11:26.421
+
+2014-07-07 15:11:26.421 nodejs.ErrorException: DUPLICATEError: test error (127.0.0.1)
+    at Object.<anonymous> (/Users/deadhorse/git/error-formatter/test/index.test.js:15:11)
+    at Module._compile (module.js:449:26)
+    at Object.Module._extensions..js (module.js:467:10)
+    at Module.load (module.js:349:32)
+    at Function.Module._load (module.js:305:12)
+    at Module.require (module.js:357:17)
+    at require (module.js:373:17)
+    at /Users/deadhorse/git/error-formatter/node_modules/mocha/lib/mocha.js:172:27
+    at Array.forEach (native)
+    at Mocha.loadFiles (/Users/deadhorse/git/error-formatter/node_modules/mocha/lib/mocha.js:169:14)
+    at Mocha.run (/Users/deadhorse/git/error-formatter/node_modules/mocha/lib/mocha.js:356:31)
+    at Object.<anonymous> (/Users/deadhorse/git/error-formatter/node_modules/mocha/bin/_mocha:366:16)
+    at Module._compile (module.js:449:26)
+    at Object.Module._extensions..js (module.js:467:10)
+    at Module.load (module.js:349:32)
+    at Function.Module._load (module.js:305:12)
+    at Function.Module.runMain (module.js:490:10)
+    at startup (node.js:124:16)
+    at node.js:803:3
+pid: 91000
+domainThrown: false
+Host: dead-horsedeMacBook-Pro.local
+URL: /error
+Data: {"foo":"bar"}
+2014-07-07 15:11:26.421
