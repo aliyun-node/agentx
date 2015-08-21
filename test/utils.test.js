@@ -1,6 +1,7 @@
 'use strict';
 
 var path = require('path');
+var os = require('os');
 var expect = require('expect.js');
 var utils = require('../lib/utils');
 
@@ -44,4 +45,26 @@ describe('/lib/utils', function () {
     date.setDate(1);
     expect(utils.getYYYYMMDD(date)).to.be('19870101');
   });
+
+  it('pad2 should ok', function () {
+    expect(utils.pad2(0)).to.be('00');
+    expect(utils.pad2(1)).to.be('01');
+    expect(utils.pad2(10)).to.be('10');
+    expect(utils.pad2(99)).to.be('99');
+  });
+
+  it('pad3 should ok', function () {
+    expect(utils.pad3(0)).to.be('000');
+    expect(utils.pad3(1)).to.be('001');
+    expect(utils.pad3(10)).to.be('010');
+    expect(utils.pad3(99)).to.be('099');
+    expect(utils.pad3(99)).to.be('099');
+    expect(utils.pad3(999)).to.be('999');
+  });
+
+  it('formatError should ok', function () {
+    var log = utils.formatError(new Error("just test"));
+    expect(log).to.contain('host: ' + os.hostname());
+  });
+
 });
