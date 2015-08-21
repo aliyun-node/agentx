@@ -67,4 +67,15 @@ describe('/lib/utils', function () {
     expect(log).to.contain('host: ' + os.hostname());
   });
 
+  it('resolveYYYYMMDD should ok', function () {
+    var finalStr = utils.resolveYYYYMMDD('#YYYY#.log');
+    var now = new Date();
+    expect(finalStr).to.be(now.getFullYear() + '.log');
+    expect(utils.resolveYYYYMMDD('#MM#')).to.be(utils.pad2(now.getMonth() + 1));
+    expect(utils.resolveYYYYMMDD('#DD#')).to.be(utils.pad2(now.getDate()));
+    var str = '#YYYY##MM##DD#.log';
+    var expt = '' + now.getFullYear() + utils.pad2(now.getMonth() + 1) +
+      utils.pad2(now.getDate());
+    expect(utils.resolveYYYYMMDD(str)).to.be(expt + '.log');
+  });
 });
