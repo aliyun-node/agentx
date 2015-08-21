@@ -10,7 +10,8 @@ describe('/lib/agent', function () {
       appid: 1,
       server: 'server',
       reconnectDelay: 1,
-      unknown: 'hehe'
+      unknown: 'hehe',
+      logdir: '/tmp'
     };
     var agent = new Agent(config);
     expect(agent.appid).to.be(1);
