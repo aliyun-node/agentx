@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var expect = require('expect.js');
 var WebSocketServer = require('ws').Server;
 var Agent = require('../lib/agent');
@@ -11,7 +12,8 @@ describe('/lib/agent', function () {
       server: 'server',
       reconnectDelay: 1,
       unknown: 'hehe',
-      logdir: '/tmp'
+      logdir: '/tmp',
+      cmddir: path.join(__dirname, 'cmddir')
     };
     var agent = new Agent(config);
     expect(agent.appid).to.be(1);
