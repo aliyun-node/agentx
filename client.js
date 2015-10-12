@@ -3,6 +3,12 @@
 var path = require('path');
 var argv = process.argv.slice(2);
 
+// exiting with parent process
+process.on('disconnect', function () {
+  console.log('exiting with parent process');
+  process.exit(0);
+});
+
 var readConfig = function(confPath) {
   var cfg = require(confPath);
 
