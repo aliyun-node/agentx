@@ -1,0 +1,56 @@
+#!/bin/bash
+
+DEFAULT_NODE="/path/to/node"
+DEFAULT_AGENTX="/path/to/agentx"
+CFG="/path/to/your/config.json"
+
+TNVM_SH_PATH=`which node|awk -F "versions" '{print $1}'`"tnvm.sh"
+. $TNVM_SH_PATH
+
+is_executable() {
+  if [ -x $1 ]; then
+    return 0;
+  else
+    return 1;
+  fi
+}
+
+is_exists() {
+  if [ -f $1 ]; then
+    return 0;
+  else
+    return 1;
+  fi
+}
+
+if is_executable $DEFAULT_NODE; then
+  NODE=$DEFAULT_NODE
+else
+  NODE=`which node`
+fi
+
+if is_executable $DEFAULT_AGENTX ; then
+  AGENTX=$DEFAULT_AGENTX
+else
+  AGENTX=`which agentx`
+fi
+
+echo $NODE $AGENTX $CFG
+
+if is_executable $NODE; then
+  if is_executable $AGENTX; then
+    if is_exists $CFG; then
+      nohup $NODE $AGENTX $CFG  &
+      exit 0
+    else
+      echo 'cfg not available'
+      exit -1
+    fi
+  else
+    echo 'no agentx installed'
+    exit -1
+  fi
+else
+  echo 'no node installed'
+  exit -1
+fi
