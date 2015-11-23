@@ -2,5 +2,5 @@ node_modules
 .logs
 dump.rdb
 coverage
-config.json
 *.tar.gz
+config_*.json
