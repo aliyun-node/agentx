@@ -20,6 +20,7 @@
   "devDependencies": {
     "expect.js": "*",
     "istanbul": "*",
-    "mocha": "*"
+    "mocha": "*",
+    "rewire": "~2.5.1"
   }
 }
