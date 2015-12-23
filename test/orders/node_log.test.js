@@ -2,15 +2,28 @@
 
 var fs = require('fs');
 var path = require('path');
+
 var expect = require('expect.js');
 var rewire = require('rewire');
+var mm = require('mm');
+
+var helper = require('../../lib/utils');
+
 var nodeLog = rewire('../../lib/orders/node_log');
 
 describe('/lib/orders/node_log.js', function () {
   before(function () {
+    mm(helper, 'getYYYYMMDD', function () {
+      return '20151209';
+    });
+
     nodeLog.init({
       logdir: path.join(__dirname, '../logdir')
     });
+  });
+
+  after(function () {
+    mm.restore();
   });
 
   it('should ok', function (done) {
@@ -41,5 +54,11 @@ describe('/lib/orders/node_log.js', function () {
       procs[item.pid][item.item] = item.value;
     });
     console.log(procs);
+  });
+
+  it('getCurrentLogPath should ok', function () {
+    var getCurrentLogPath = nodeLog.__get__('getCurrentLogPath');
+    var logPath = path.join(__dirname, '../logdir/node-20151209.log');
+    expect(getCurrentLogPath()).to.be(logPath);
   });
 });

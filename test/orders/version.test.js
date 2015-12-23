@@ -17,7 +17,7 @@ describe('/lib/orders/version.js', function () {
       expect(params.type).to.be('version');
       expect(params.metrics).to.be.ok();
       var metrics = params.metrics;
-      expect(metrics).to.have.key('node');
+      expect(metrics).to.have.property('node');
       done();
     });
   });
