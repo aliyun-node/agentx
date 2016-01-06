@@ -17,7 +17,7 @@ describe('/lib/agent', function () {
     };
     var agent = new Agent(config);
     expect(agent.appid).to.be(1);
-    expect(agent.server).to.be("ws://server/");
+    expect(agent.server).to.be('ws://server/');
     expect(agent.reconnectDelay).to.be(1000);
     expect(agent.unknown).to.be(undefined);
   });
