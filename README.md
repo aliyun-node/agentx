@@ -3,6 +3,10 @@ AgentX
 
 AgentX是alinode团队开发的agent命令程序，用于协助alinode的性能数据上报和问题诊断。
 
+- [![Build Status](https://travis-ci.org/aliyun-node/agentx.png?branch=master)](https://travis-ci.org/aliyun-node/agentx)
+- [![Dependencies Status](https://david-dm.org/aliyun-node/agentx.png)](https://david-dm.org/aliyun-node/agentx)
+- [![Coverage Status](https://coveralls.io/repos/aliyun-node/agentx/badge.png)](https://coveralls.io/r/aliyun-node/agentx)
+
 ## Installation
 
 ```
