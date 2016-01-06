@@ -24,7 +24,7 @@ describe('/lib/utils', function () {
   });
 
   it('exec should ok', function (done) {
-    var sh = path.join(__dirname, "cmddir", "echo.sh");
+    var sh = path.join(__dirname, 'cmddir', 'echo.sh');
     utils.execCommand(sh, ['hehe'], {}, function (err, stdout, stderr) {
       expect(err).to.not.be.ok();
       expect(stdout).to.be('hehe' + require('os').EOL);
@@ -39,7 +39,7 @@ describe('/lib/utils', function () {
     date.setMonth(9);
     date.setDate(12);
     expect(utils.getYYYYMMDD(date)).to.be('19871012');
-    var date = new Date();
+    date = new Date();
     date.setFullYear(1987);
     date.setMonth(0);
     date.setDate(1);
@@ -63,7 +63,7 @@ describe('/lib/utils', function () {
   });
 
   it('formatError should ok', function () {
-    var log = utils.formatError(new Error("just test"));
+    var log = utils.formatError(new Error('just test'));
     expect(log).to.contain('host: ' + os.hostname());
   });
 
