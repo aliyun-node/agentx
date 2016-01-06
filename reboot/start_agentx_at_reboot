@@ -1,0 +1,21 @@
+#!/bin/bash
+cd `dirname $0`
+# 添加到service里面，可以start/stop/restart/status
+cp `pwd`"/init_agentx" /etc/init.d/agentx
+
+# 将刚刚生成的启动脚本放到/usr/local/agentx/目录下
+mkdir -p /usr/local/agentx
+cp -f `pwd`"/startagentx-tmp" /usr/local/agentx/startagentx
+
+# 放到启动项里面
+LN=`grep -n "exit" /etc/rc.local | grep -v "#"|awk -F : '{print $1}'`
+HAS_AGENTX=`grep -n "startagentx" /etc/rc.local | grep -v "#"|awk -F : '{print $1}'`
+START="/usr/local/agentx/startagentx"
+RC="/etc/rc.local"
+
+if [ ! $HAS_AGENTX ]; then
+  echo "$START added to $RC."
+  sed -i "$LN i\\$START" $RC
+else
+  echo "$START already in $RC."
+fi
