@@ -14,8 +14,8 @@
     "ws": "^1.0.1",
     "nounou": "1.0.1",
     "debug": "*",
-    "through2": "^0.6.5",
-    "split2": "^0.2.1"
+    "through2": "^2.0.0",
+    "split2": "^1.1.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.6",
