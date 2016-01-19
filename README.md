@@ -28,9 +28,23 @@ agentx需要一个配置文件来进行使用，agentx仅会在配置指定下�
   "logdir": "</path/to/your/log/dir>",
   "reconnectDelay": 10,
   "heartbeatInterval": 60,
-  "reportInterval": 60
+  "reportInterval": 60,
+  "error_log": [
+    "</path/to/your/error.log>",
+    "您的应用在业务层面产生的异常日志的路径",
+    "例如：/root/.logs/error.#YYYY#-#MM#-#DD#.log",
+    "可选"
+  ],
+  "packages": [
+    "</path/to/your/package.json>",
+    "可以输入多个package.json的路径",
+    "可选"
+  ]
 }
 ```
+
+> 配置中的#YYYY#、#MM#、#DD#是通配符，如果您的异常日志是按时间生成的，请使用它。
+
 保存为`config.json`。上述不明确的地方请咨询旺旺群：1406236180。
 
 完成配置后，请使用以下命令进行执行：
