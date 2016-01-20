@@ -61,4 +61,18 @@ describe('/lib/orders/node_log.js', function () {
     var logPath = path.join(__dirname, '../logdir/node-20151209.log');
     expect(getCurrentLogPath()).to.be(logPath);
   });
+
+  describe('no logdir', function () {
+    before(function () {
+      nodeLog.logdir = '';
+    });
+
+    it('should ok', function (done) {
+      nodeLog.run(function (err) {
+        expect(err).to.be.ok();
+        expect(err.message).to.be('Not specific logdir in agentx config file');
+        done();
+      });
+    });
+  });
 });

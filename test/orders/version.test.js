@@ -2,6 +2,7 @@
 
 var path = require('path');
 var expect = require('expect.js');
+var mm = require('mm');
 var version = require('../../lib/orders/version');
 
 describe('/lib/orders/version.js', function () {
@@ -19,6 +20,28 @@ describe('/lib/orders/version.js', function () {
       var metrics = params.metrics;
       expect(metrics).to.have.property('node');
       done();
+    });
+  });
+
+  describe('command invalid', function () {
+    before(function () {
+      mm(require('../../lib/utils'), 'execFile', function (command, callback) {
+        process.nextTick(function () {
+          callback(new Error('mock error'));
+        });
+      });
+    });
+
+    after(function () {
+      mm.restore();
+    });
+
+    it('should ok', function (done) {
+      version.run(function (err) {
+        expect(err).to.be.ok();
+        expect(err.message).to.be('mock error');
+        done();
+      });
     });
   });
 });
