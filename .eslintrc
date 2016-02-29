@@ -1,17 +1,8 @@
 {
   "rules": {
-    "indent": [
-      2,
-      2
-    ],
-    "quotes": [
-      2,
-      "single"
-    ],
-    "linebreak-style": [
-      2,
-      "unix"
-    ],
+    "indent": [2, 2],
+    "quotes": [2, "single"],
+    "linebreak-style": [2, "unix"],
     "semi": [2, "always"],
     "strict": [2, "global"],
     "curly": 2,
@@ -37,7 +28,6 @@
     "no-unused-vars": 2,
     "no-undefined": 2,
     "no-undef": 2,
-    "no-undef-init": 2,
     "global-require": 0,
     "no-console": 0
   },
