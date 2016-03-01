@@ -53,7 +53,7 @@ describe('/lib/orders/node_log.js', function () {
       }
       procs[item.pid][item.item] = item.value;
     });
-    console.log(procs);
+    expect(procs).to.have.property('45020');
   });
 
   it('getCurrentLogPath should ok', function () {
