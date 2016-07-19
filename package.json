@@ -3,7 +3,8 @@
   "version": "1.5.1",
   "description": "agentx is powered by alinode",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "test-cov": "make test-cov"
   },
   "bin": {
     "agentx": "./start_client.js"
