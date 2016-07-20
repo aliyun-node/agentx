@@ -55,4 +55,47 @@ describe('/lib/agent', function () {
     agent.run();
     done();
   });
+
+  it('should not exit when run with libMode', function (done) {
+    var agent = new Agent({
+      libMode: true,
+      server: 'localhost:8990',
+      appid: 2,
+      secret: '2',
+      logdir: '/tmp/',
+      cmddir: '/tmp/'
+    });
+
+    agent.run();
+    // mock signature not exist
+    agent.onMessage({
+      signature: null,
+      type: 'error',
+      params: {
+        error: 'mock error'
+      }
+    });
+    // mock REG_NOK result
+    var msg = {
+      type: 'result',
+      params: {
+        result: 'REG_NOK'
+      }
+    };
+    var signature = agent.signature(msg);
+    msg.signature = signature;
+    agent.onMessage(msg);
+
+    // mock error type
+    var msg2 = {
+      type: 'error',
+      params: {
+        error: 'mock error type'
+      }
+    };
+    var signature2 = agent.signature(msg2);
+    msg2.signature = signature2;
+    agent.onMessage(msg2);
+    done();
+  });
 });
