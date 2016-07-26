@@ -60,8 +60,7 @@ describe('/lib/orders/error_log.js', function () {
 
     it('should ok', function (done) {
       errorLog.run(function (err) {
-        expect(err).to.be.ok();
-        expect(err.code).to.be('ENOENT');
+        expect(err).to.not.be.ok();
         done();
       });
     });
