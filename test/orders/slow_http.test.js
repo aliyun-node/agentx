@@ -48,11 +48,21 @@ describe('/lib/orders/slow_http.js', function () {
   });
 
   it('getSlowHTTPLog should ok', function () {
-    var line = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+    var line0 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 811';
+    var line1 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+      'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 810';
+    var line2 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+      'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 809';
+    var line3 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+      'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 807';
+    var line4 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+      'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 808';
+    var line5 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 <- ' +
+      'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 806';
     var getSlowHTTPLog = slowHttp.__get__('getSlowHTTPLog');
-    var parsed = getSlowHTTPLog([line]);
-    expect(parsed).to.have.length(1);
+    var parsed = getSlowHTTPLog([line0, line1, line2, line3, line4, line5]);
+    expect(parsed).to.have.length(4);
     var struct = parsed[0];
     expect(struct).to.have.property('timestamp', '2016-02-29T09:09:53.988Z');
     expect(struct).to.have.property('from', '::ffff:127.0.0.1');
@@ -83,5 +93,12 @@ describe('/lib/orders/slow_http.js', function () {
         done();
       });
     });
+  });
+
+  it('sortByRT should ok', function () {
+    var sortByRT = slowHttp.__get__('sortByRT');
+    var a = [{rt: 10}, {rt: 12}, {rt: 5}, {rt: 5}];
+    a.sort(sortByRT);
+    expect(a).to.eql([ { rt: 12 }, { rt: 10 }, { rt: 5 }, {rt: 5} ]);
   });
 });
