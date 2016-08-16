@@ -47,6 +47,14 @@ describe('/lib/orders/slow_http.js', function () {
     });
   });
 
+  it('should ok with run again', function (done) {
+    slowHttp.run(function (err, params) {
+      expect(err).not.to.be.ok();
+      expect(params).to.be(null);
+      done();
+    });
+  });
+
   it('getSlowHTTPLog should ok', function () {
     var line0 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 811';
@@ -90,6 +98,21 @@ describe('/lib/orders/slow_http.js', function () {
       slowHttp.run(function (err) {
         expect(err).to.be.ok();
         expect(err.message).to.be('Not specific logdir in agentx config file');
+        done();
+      });
+    });
+  });
+
+  describe('inexist logdir', function () {
+    before(function () {
+      slowHttp.init({
+        logdir: path.join(__dirname, '../logsx')
+      });
+    });
+
+    it('should ok', function (done) {
+      slowHttp.run(function (err) {
+        expect(err).to.not.be.ok();
         done();
       });
     });

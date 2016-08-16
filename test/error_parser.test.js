@@ -15,8 +15,21 @@ describe('/lib/error_parser', function () {
   it('parse should ok', function (done) {
     var logPath = path.join(__dirname, 'logs/error.log');
     var readable = fs.createReadStream(logPath);
-    Parser.parse(readable, 10, function (err) {
+    Parser.parse(readable, 1, function (err, list) {
       expect(err).not.to.be.ok();
+      expect(list).to.be.ok();
+      expect(list).to.have.length(1);
+      done();
+    });
+  });
+
+  it('parse without limit should ok', function (done) {
+    var logPath = path.join(__dirname, 'logs/error.log');
+    var readable = fs.createReadStream(logPath);
+    Parser.parse(readable, function (err, list) {
+      expect(err).not.to.be.ok();
+      expect(list).to.be.ok();
+      expect(list).to.have.length(2);
       done();
     });
   });
