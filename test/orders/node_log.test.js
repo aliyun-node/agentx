@@ -41,6 +41,18 @@ describe('/lib/orders/node_log.js', function () {
     });
   });
 
+  it('should ok with no change', function (done) {
+    nodeLog.run(function (err, params) {
+      expect(err).not.to.be.ok();
+      expect(params.type).to.be('node_log');
+      expect(params.metrics).to.be.ok();
+      var metrics = params.metrics;
+      expect(metrics.ok).to.be.ok();
+      expect(metrics.data).to.have.length(0);
+      done();
+    });
+  });
+
   it('getNodeLog should ok', function () {
     var logPath = path.join(__dirname, '../logdir/node-20151209.log');
     var log = fs.readFileSync(logPath, 'utf8');
@@ -71,6 +83,21 @@ describe('/lib/orders/node_log.js', function () {
       nodeLog.run(function (err) {
         expect(err).to.be.ok();
         expect(err.message).to.be('Not specific logdir in agentx config file');
+        done();
+      });
+    });
+  });
+
+  describe('inexist logdir', function () {
+    before(function () {
+      nodeLog.init({
+        logdir: path.join(__dirname, '../logsx')
+      });
+    });
+
+    it('should ok', function (done) {
+      nodeLog.run(function (err) {
+        expect(err).to.not.be.ok();
         done();
       });
     });
