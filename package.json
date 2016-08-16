@@ -1,6 +1,6 @@
 {
   "name": "agentx",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "description": "agentx is powered by alinode",
   "scripts": {
     "test": "make test",
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "ws": "^1.1.1",
-    "nounou": "1.0.1",
+    "nounou": "^1.2.1",
     "debug": "*",
     "through2": "^2.0.0",
     "split2": "^2.0.0"
