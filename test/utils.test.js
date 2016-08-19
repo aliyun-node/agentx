@@ -67,15 +67,20 @@ describe('/lib/utils', function () {
     expect(log).to.contain('host: ' + os.hostname());
   });
 
-  it('resolveYYYYMMDD should ok', function () {
-    var finalStr = utils.resolveYYYYMMDD('#YYYY#.log');
+  it('resolveYYYYMMDDHH should ok', function () {
+    var pad2 = utils.pad2;
+    var finalStr = utils.resolveYYYYMMDDHH('#YYYY#.log');
     var now = new Date();
     expect(finalStr).to.be(now.getFullYear() + '.log');
-    expect(utils.resolveYYYYMMDD('#MM#')).to.be(utils.pad2(now.getMonth() + 1));
-    expect(utils.resolveYYYYMMDD('#DD#')).to.be(utils.pad2(now.getDate()));
+    expect(utils.resolveYYYYMMDDHH('#MM#')).to.be(pad2(now.getMonth() + 1));
+    expect(utils.resolveYYYYMMDDHH('#DD#')).to.be(pad2(now.getDate()));
     var str = '#YYYY##MM##DD#.log';
-    var expt = '' + now.getFullYear() + utils.pad2(now.getMonth() + 1) +
+    var expt = '' + now.getFullYear() + pad2(now.getMonth() + 1) +
       utils.pad2(now.getDate());
-    expect(utils.resolveYYYYMMDD(str)).to.be(expt + '.log');
+    expect(utils.resolveYYYYMMDDHH(str)).to.be(expt + '.log');
+    str = '#YYYY##MM##DD##HH#.log';
+    expt = '' + now.getFullYear() + pad2(now.getMonth() + 1) +
+      pad2(now.getDate()) + pad2(now.getHours());
+    expect(utils.resolveYYYYMMDDHH(str)).to.be(expt + '.log');
   });
 });
