@@ -32,7 +32,7 @@ agentx需要一个配置文件来进行使用，agentx仅会在配置指定下�
   "error_log": [
     "</path/to/your/error.log>",
     "您的应用在业务层面产生的异常日志的路径",
-    "例如：/root/.logs/error.#YYYY#-#MM#-#DD#.log",
+    "例如：/root/.logs/error.#YYYY#-#MM#-#DD#-#HH#.log",
     "可选"
   ],
   "packages": [
@@ -43,7 +43,7 @@ agentx需要一个配置文件来进行使用，agentx仅会在配置指定下�
 }
 ```
 
-> 配置中的#YYYY#、#MM#、#DD#是通配符，如果您的异常日志是按时间生成的，请使用它。
+> 配置中的#YYYY#、#MM#、#DD#、#HH#是通配符，如果您的异常日志是按时间生成的，请使用它。
 
 保存为`config.json`。上述不明确的地方请咨询旺旺群：1406236180。
 
