@@ -33,6 +33,15 @@ describe('/lib/utils', function () {
     });
   });
 
+  it('execFile should ok', function (done) {
+    var sh = path.join(__dirname, 'cmddir', 'no_permission');
+    utils.execFile(sh, function (err, stdout, stderr) {
+      expect(err).to.be.ok();
+      expect(err.code).to.be('EACCES');
+      done();
+    });
+  });
+
   it('getYYYYMMDD should ok', function () {
     var date = new Date();
     date.setFullYear(1987);
