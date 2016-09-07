@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ps -e -o pid,command | grep -E "$1 |$1$" | grep -vE 'grep|get_processes_count' -c
