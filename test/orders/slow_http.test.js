@@ -31,7 +31,7 @@ describe('/lib/orders/slow_http.js', function () {
       expect(params.type).to.be('slow_http');
       expect(params.metrics).to.be.ok();
       var metrics = params.metrics;
-      expect(metrics).to.have.length(4);
+      expect(metrics).to.have.length(2);
       metrics.forEach(function (item) {
         expect(item).to.have.property('timestamp');
         expect(item).to.have.property('from');
@@ -70,7 +70,7 @@ describe('/lib/orders/slow_http.js', function () {
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 806';
     var getSlowHTTPLog = slowHttp.__get__('getSlowHTTPLog');
     var parsed = getSlowHTTPLog([line0, line1, line2, line3, line4, line5]);
-    expect(parsed).to.have.length(4);
+    expect(parsed).to.have.length(2);
     var struct = parsed[0];
     expect(struct).to.have.property('timestamp', '2016-02-29T09:09:53.988Z');
     expect(struct).to.have.property('from', '::ffff:127.0.0.1');
