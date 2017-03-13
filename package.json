@@ -1,6 +1,6 @@
 {
   "name": "agentx",
-  "version": "1.7.3",
+  "version": "1.8.0",
   "description": "agentx is powered by alinode",
   "scripts": {
     "test": "make test",
