@@ -1,4 +1,4 @@
-TESTS = $(shell ls -S `find test -type f -name "*.test.js" -print`)
+TESTS = test/*.js
 REPORTER = spec
 TIMEOUT = 3000
 MOCHA_OPTS =
@@ -13,7 +13,7 @@ install:
 	@npm install --registry=http://r.cnpmjs.org
 
 test:
-	@NODE_ENV=test $(MOCHA) -R $(REPORTER) -t $(TIMEOUT) \
+	@$(MOCHA) -R $(REPORTER) -t $(TIMEOUT) \
 		$(MOCHA_OPTS) \
 		$(TESTS)
 
@@ -26,13 +26,9 @@ test-coveralls:
 	@cat ./coverage/lcov.info | $(COVERALLS) && rm -rf ./coverage
 
 debug:
-	@NODE_ENV=test \
-		node-debug \
+	@node-debug \
 		$(MOCHA) --timeout 0 \
 		$(MOCHA_OPTS) \
 		$(TESTS)
-
-tgz:
-	git archive --prefix=agent-client/ --format=tar.gz master > agent-client.tar.gz
 
 .PHONY: test
