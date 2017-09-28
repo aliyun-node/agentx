@@ -22,6 +22,38 @@ describe('/lib/agent', function () {
     expect(agent.unknown).to.be(undefined);
   });
 
+  it('new wss Agent should ok', function () {
+    var config = {
+      appid: 1,
+      server: 'agentserver.node.aliyun.com',
+      reconnectDelay: 1,
+      unknown: 'hehe',
+      logdir: '/tmp',
+      cmddir: path.join(__dirname, 'cmddir')
+    };
+    var agent = new Agent(config);
+    expect(agent.appid).to.be('1');
+    expect(agent.server).to.be('wss://agentserver.node.aliyun.com/');
+    expect(agent.reconnectDelay).to.be(1000);
+    expect(agent.unknown).to.be(undefined);
+  });
+
+  it('new wss Agent with wss prefix should ok', function () {
+    var config = {
+      appid: 1,
+      server: 'wss://abc',
+      reconnectDelay: 1,
+      unknown: 'hehe',
+      logdir: '/tmp',
+      cmddir: path.join(__dirname, 'cmddir')
+    };
+    var agent = new Agent(config);
+    expect(agent.appid).to.be('1');
+    expect(agent.server).to.be('wss://abc');
+    expect(agent.reconnectDelay).to.be(1000);
+    expect(agent.unknown).to.be(undefined);
+  });
+
   var wss;
   before(function () {
     wss = new WebSocketServer({ port: 8990 });
