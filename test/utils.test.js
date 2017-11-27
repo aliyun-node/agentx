@@ -9,7 +9,7 @@ describe('/lib/utils', function () {
   it('random should ok', function () {
     var val = utils.random(100, 200);
     expect(val).to.be.below(200);
-    expect(val).to.be.above(100);
+    expect(val).to.be.above(99);
   });
 
   it('uid should ok', function () {

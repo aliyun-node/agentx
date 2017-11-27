@@ -38,7 +38,7 @@ describe('/lib/orders/system.js', function () {
     ].join('\n');
 
     before(function () {
-      mm.data(require('fs'), 'readFileSync', mock_stdout);
+      mm.syncData(require('fs'), 'readFileSync', mock_stdout);
     });
 
     it('should ok', function (done) {
