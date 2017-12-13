@@ -20,10 +20,10 @@ var readConfig = function(confPath) {
     !cfg.heartbeatInterval ||
     !cfg.reconnectDelay ||
     !cfg.reportInterval) {
-    console.log('配置文件:');
+    console.log('\n配置文件:');
     console.log(JSON.stringify(cfg, null, 2));
-    console.log('请检查配置文件, 确保以下参数配置：');
-    console.log('  server, appid, secret, cmddir, logdir, heartbeatInterval, reconnectDelay, reportInterval');
+    console.log('请检查配置文件, 确保以下参数配置正确：');
+    console.log('  server, appid, secret, cmddir, logdir, heartbeatInterval, reconnectDelay, reportInterval\n');
     process.send({type: 'suicide'});
     process.exit(1);
   }
