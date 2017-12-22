@@ -63,6 +63,136 @@ describe('/lib/orders/system.js', function () {
     });
   });
 
+
+  describe('mock linux loadavg ok 1', function () {
+    var mock_stdout = '0.51 0.36 0.50 2/1253 58';
+
+    before(function () {
+      mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+    });
+
+    it('should ok', function (done) {
+      system.run(function (err, params) {
+        console.log(params);
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('load1');
+        expect(metrics).to.have.key('load5');
+        expect(metrics).to.have.key('load15');
+        expect(metrics['load1']).equal(0.51);
+        expect(metrics['load5']).equal(0.36);
+        expect(metrics['load15']).equal(0.50);
+        expect(metrics).to.have.key('cpu');
+        expect(metrics).to.have.key('cpu_count');
+        done();
+      });
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
+  describe('mock linux loadavg ok 2', function () {
+    var mock_stdout = '51 36 50 2/1253 58';
+
+    before(function () {
+      mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+    });
+
+    it('should ok', function (done) {
+      system.run(function (err, params) {
+        console.log(params);
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('load1');
+        expect(metrics).to.have.key('load5');
+        expect(metrics).to.have.key('load15');
+        expect(metrics['load1']).equal(51);
+        expect(metrics['load5']).equal(36);
+        expect(metrics['load15']).equal(50);
+        expect(metrics).to.have.key('cpu');
+        expect(metrics).to.have.key('cpu_count');
+        done();
+      });
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
+
+  describe('mock linux loadavg ok 3', function () {
+    var mock_stdout = '110.51 0.36 0.50 2/1253 58';
+
+    before(function () {
+      mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+    });
+
+    it('should ok', function (done) {
+      system.run(function (err, params) {
+        console.log(params);
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('load1');
+        expect(metrics).to.have.key('load5');
+        expect(metrics).to.have.key('load15');
+        expect(metrics['load1']).equal(110.51);
+        expect(metrics['load5']).equal(0.36);
+        expect(metrics['load15']).equal(0.50);
+        expect(metrics).to.have.key('cpu');
+        expect(metrics).to.have.key('cpu_count');
+        done();
+      });
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
+  describe('mock linux loadavg nok', function () {
+    var mock_stdout = '110.51 aa 0.50 2/1253 58';
+
+    before(function () {
+      mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+    });
+
+    it('should ok', function (done) {
+      system.run(function (err, params) {
+        console.log(params);
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('load1');
+        expect(metrics).to.have.key('load5');
+        expect(metrics).to.have.key('load15');
+        expect(metrics).to.have.key('cpu');
+        expect(metrics).to.have.key('cpu_count');
+        done();
+      });
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
   describe('mock non nonLinux', function () {
     var mock_stdout = 'nonLinux';
 
