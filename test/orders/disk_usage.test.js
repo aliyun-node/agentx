@@ -26,7 +26,7 @@ describe('/lib/orders/disk_usage.js', function () {
 
   describe('command invalid', function () {
     before(function () {
-      mm(require('../../lib/utils'), 'execFile', function (command, callback) {
+      mm(require('../../lib/utils'), 'execFile', function (command, args, callback) {
         process.nextTick(function () {
           callback(new Error('mock error'));
         });
