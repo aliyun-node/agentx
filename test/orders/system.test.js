@@ -43,7 +43,6 @@ describe('/lib/orders/system.js', function () {
 
     it('should ok', function (done) {
       system.run(function (err, params) {
-        console.log(params);
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
@@ -69,11 +68,11 @@ describe('/lib/orders/system.js', function () {
 
     before(function () {
       mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+      mm.syncData(require('os'), 'type', 'Linux');
     });
 
     it('should ok', function (done) {
       system.run(function (err, params) {
-        console.log(params);
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
@@ -102,11 +101,11 @@ describe('/lib/orders/system.js', function () {
 
     before(function () {
       mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+      mm.syncData(require('os'), 'type', 'Linux');
     });
 
     it('should ok', function (done) {
       system.run(function (err, params) {
-        console.log(params);
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
@@ -136,11 +135,11 @@ describe('/lib/orders/system.js', function () {
 
     before(function () {
       mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+      mm.syncData(require('os'), 'type', 'Linux');
     });
 
     it('should ok', function (done) {
       system.run(function (err, params) {
-        console.log(params);
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
@@ -169,11 +168,11 @@ describe('/lib/orders/system.js', function () {
 
     before(function () {
       mm.syncData(require('fs'), 'readFileSync', mock_stdout);
+      mm.syncData(require('os'), 'type', 'Linux');
     });
 
     it('should ok', function (done) {
       system.run(function (err, params) {
-        console.log(params);
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
@@ -193,16 +192,15 @@ describe('/lib/orders/system.js', function () {
     });
   });
 
-  describe('mock non nonLinux', function () {
+  describe('mock nonLinux', function () {
     var mock_stdout = 'nonLinux';
 
     before(function () {
-      mm.data(require('os'), 'type', mock_stdout);
+      mm.syncData(require('os'), 'type', mock_stdout);
     });
 
     it('should ok', function (done) {
       system.run(function (err, params) {
-        console.log(params);
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
