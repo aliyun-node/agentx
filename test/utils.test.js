@@ -131,8 +131,12 @@ describe('/lib/utils', function () {
     });
 
     it('should ok', function (done) {
-      var agentid = utils.getTagedAgentID();
-      expect(agentid).to.be("NewHost#53d100")
+      var agentid = utils.getTagedAgentID("IP");
+      expect(agentid).to.be("NewHost_53100")
+      agentid = utils.getTagedAgentID();
+      expect(agentid).to.be('NewHost');
+      agentid = utils.getTagedAgentID("hoho");
+      expect(agentid).to.be('NewHost');
       agentid = utils.getTagedAgentID(true);
       expect(agentid).to.be('NewHost');
       done()
