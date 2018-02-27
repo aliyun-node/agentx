@@ -2,6 +2,7 @@
 
 var path = require('path');
 var os = require('os');
+var mm = require('mm')
 var expect = require('expect.js');
 var utils = require('../lib/utils');
 
@@ -91,5 +92,54 @@ describe('/lib/utils', function () {
     expt = '' + now.getFullYear() + pad2(now.getMonth() + 1) +
       pad2(now.getDate()) + pad2(now.getHours());
     expect(utils.resolveYYYYMMDDHH(str)).to.be(expt + '.log');
+  });
+
+  describe('mock networkInterfaces', function () {
+    var mock_stdout = {
+      lo:
+       [ { address: '127.0.0.1',
+           netmask: '255.0.0.0',
+           family: 'IPv4',
+           mac: '00:00:00:00:00:00',
+           internal: true,
+           cidr: '127.0.0.1/8' },
+         { address: '::1',
+           netmask: 'ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff',
+           family: 'IPv6',
+           mac: '00:00:00:00:00:00',
+           scopeid: 0,
+           internal: true,
+           cidr: '::1/128' } ],
+      wlan0:
+       [ { address: '30.40.53.100',
+           netmask: '255.255.254.0',
+           family: 'IPv4',
+           mac: '7c:7a:91:a7:6b:c9',
+           internal: false,
+           cidr: '30.40.53.92/23' },
+         { address: 'fe80::7a71:c6e7:3709:41e0',
+           netmask: 'ffff:ffff:ffff:ffff::',
+           family: 'IPv6',
+           mac: '7c:7a:91:a7:6b:c9',
+           scopeid: 3,
+           internal: false,
+           cidr: 'fe80::7a71:c6e7:3709:41e0/64' } ] };
+
+    before(function () {
+      mm.syncData(os, 'networkInterfaces', mock_stdout);
+      mm.syncData(os, 'hostname', 'NewHost')
+    });
+
+    it('should ok', function (done) {
+      var agentid = utils.getTagedAgentID();
+      expect(agentid).to.be("NewHost#53d100")
+      agentid = utils.getTagedAgentID(true);
+      expect(agentid).to.be('NewHost');
+      done()
+    });
+
+    after(function() {
+      mm.restore();
+    });
   });
 });
