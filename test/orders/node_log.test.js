@@ -27,16 +27,55 @@ describe('/lib/orders/node_log.js', function () {
   });
 
   it('should ok', function (done) {
+    // backup logfile
+    var logPath = path.join(__dirname, '../logdir/node-20151209.log');
+    var log = fs.readFileSync(logPath, 'utf8');
+
     nodeLog.run(function (err, params) {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('node_log');
       expect(params.metrics).to.be.ok();
       var metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
-      expect(metrics.data).to.have.length(192);
+      expect(metrics.data).to.have.length(0);
       metrics.data.forEach(function (item) {
         expect(item.pid).to.be('45020');
       });
+    });
+
+    var append = '[2015-12-09 20:24:24.453835] [info] [heap] [45020]' +
+      ' rss: 69312512, vsz: 3160494080, heap_used: 26779680, ' +
+      'heap_available: 1486138032, heap_total: 59792128, ' +
+      'heap_limit: 1535115264, heap_executeable: 8388608, ' +
+      'total_physical_size: 0, memory_allocator_used: 63963136, ' +
+      'memory_allocator_available: 1471152128, new_space_size: 1905968, ' +
+      'new_space_used: 1905968, new_space_available: 14605008, ' +
+      'new_space_committed: 33021952, old_space_size: 18635144, ' +
+      'old_space_used: 18619120, old_space_available: 966304, ' +
+      'old_space_committed: 19606784, code_space_size: 4618528, ' +
+      'code_space_used: 4593856, code_space_available: 479808, ' +
+      'code_space_committed: 5099520, map_space_size: 2063824, ' +
+      'map_space_used: 1660736, map_space_available: 0, ' +
+      'map_space_committed: 2063872, lo_space_size: 0, lo_space_used: 0, ' +
+      'lo_space_available: 1470086912, lo_space_committed: 0, ' +
+      'amount_of_external_allocated_memory: 43056';
+
+    // append sth
+    fs.appendFileSync(logPath, append);
+
+    nodeLog.run(function (err, params) {
+      expect(err).not.to.be.ok();
+      expect(params.type).to.be('node_log');
+      expect(params.metrics).to.be.ok();
+      var metrics = params.metrics;
+      expect(metrics.ok).to.be.ok();
+      expect(metrics.data).to.have.length(31);
+      metrics.data.forEach(function (item) {
+        expect(item.pid).to.be('45020');
+      });
+
+      // restore log file
+      fs.writeFileSync(logPath, log);
       done();
     });
   });
