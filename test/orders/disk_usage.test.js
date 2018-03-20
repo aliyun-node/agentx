@@ -59,6 +59,7 @@ describe('/lib/orders/disk_usage.js', function () {
       'none                102400        0    102400       0% /run/user',
       '/dev/sda3         80448976 67980916   8358408      90% /home/admin',
       '/dev/disk2s2      275448    243528     31920    89%    /Volumes/QQ',
+      '/dev/disk2s3      275448    243528     31920    89%    /private/QQ',
       'tmpfs               786024        4    786020       1% /run/user/119',
       'tmpfs               786024       72    785952       1% /run/user/1000'
     ].join('\n');
@@ -80,6 +81,7 @@ describe('/lib/orders/disk_usage.js', function () {
         expect(metrics['/home/admin']).equal(90);
         expect(metrics['/data/app']).equal(0);
         expect(metrics).to.not.have.property('/Volumes/QQ');
+        expect(metrics).to.not.have.property('/private/QQ');
         done();
       });
     });
