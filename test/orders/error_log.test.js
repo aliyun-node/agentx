@@ -1,5 +1,6 @@
 'use strict';
 
+var fs = require('fs');
 var path = require('path');
 var expect = require('expect.js');
 var errorLog = require('../../lib/orders/error_log');
@@ -17,10 +18,37 @@ describe('/lib/orders/error_log.js', function () {
       expect(params.type).to.be('error_log');
       expect(params.metrics).to.be.ok();
       var metrics = params.metrics;
+      expect(metrics).to.have.length(0);
+      metrics.forEach(function (item) {
+        expect(item.type).to.be('DUPLICATEError');
+      });
+    });
+
+    var errPath = path.join(__dirname, '../logs', 'error.log');
+    var errbackup = fs.readFileSync(errPath, 'utf8');
+
+    fs.appendFileSync(errPath, errbackup);
+
+    errorLog.run(function (err, params) {
+      expect(err).not.to.be.ok();
+      expect(params.type).to.be('error_log');
+      expect(params.metrics).to.be.ok();
+      var metrics = params.metrics;
       expect(metrics).to.have.length(2);
       metrics.forEach(function (item) {
         expect(item.type).to.be('DUPLICATEError');
       });
+      fs.writeFileSync(errPath, errbackup);
+      done();
+    });
+  });
+
+  it('should get 2 errors when file size changed to small', function (done) {
+    errorLog.run(function (err, params) {
+      expect(err).not.to.be.ok();
+      expect(params.type).to.be('error_log');
+      expect(params.metrics).to.be.ok();
+      expect(params.metrics).to.have.length(2);
       done();
     });
   });
