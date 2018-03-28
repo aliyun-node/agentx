@@ -13,7 +13,7 @@ var slowHttp = rewire('../../lib/orders/slow_http');
 describe('/lib/orders/slow_http.js', function () {
   before(function () {
     mm(helper, 'getYYYYMMDD', function () {
-      return '20160229';
+      return '20180301';
     });
 
     slowHttp.init({
@@ -85,7 +85,7 @@ describe('/lib/orders/slow_http.js', function () {
 
   it('getCurrentLogPath should ok', function () {
     var getCurrentLogPath = slowHttp.__get__('getCurrentLogPath');
-    var logPath = path.join(__dirname, '../logdir/access-20160229.log');
+    var logPath = path.join(__dirname, '../logdir/access-20180301.log');
     expect(getCurrentLogPath()).to.be(logPath);
   });
 
