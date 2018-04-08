@@ -24,6 +24,7 @@
   "devDependencies": {
     "codecov": "^3.0.0",
     "coveralls": "^2.11.6",
+    "eslint": "^4.19.1",
     "expect.js": "^0.3.1",
     "mm": "^2.2.0",
     "mocha": "^3",
