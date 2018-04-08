@@ -6,24 +6,25 @@ var expect = require('expect.js');
 var errorLog = require('../../lib/orders/error_log');
 
 describe('/lib/orders/error_log.js', function () {
+
   before(function () {
     errorLog.init({
       error_log: [path.join(__dirname, '../logs', 'error.log')]
     });
   });
 
-  it('should ok', function (done) {
+  it('should ok with no errors', function (done) {
     errorLog.run(function (err, params) {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('error_log');
       expect(params.metrics).to.be.ok();
       var metrics = params.metrics;
       expect(metrics).to.have.length(0);
-      metrics.forEach(function (item) {
-        expect(item.type).to.be('DUPLICATEError');
-      });
+      done();
     });
+  });
 
+  it('should ok with new errors', function (done) {
     var errPath = path.join(__dirname, '../logs', 'error.log');
     var errbackup = fs.readFileSync(errPath, 'utf8');
 
