@@ -7,6 +7,10 @@ var expect = require('expect.js');
 var listCore = require('../../lib/orders/list_core');
 
 describe('/lib/orders/list_core.js', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
   var mock =  {
     isFile: function() { return true; },
     dev: 2053,
@@ -56,6 +60,10 @@ describe('/lib/orders/list_core.js', function () {
 });
 
 describe('/lib/orders/list_core.js', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
   it('should ok when specify the coredir', function (done) {
     var dir = path.join(__dirname, '../logdir');
     var corePath = path.join(dir, 'core.123');
@@ -76,6 +84,10 @@ describe('/lib/orders/list_core.js', function () {
 });
 
 describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
   var dir = path.join(__dirname, '../logdir');
   var corePath1 = path.join(dir, 'core.12345');
   var corePath2 = path.join(dir, 'coredump_12345');
@@ -117,6 +129,10 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
 });
 
 describe('should ok when core dumped to PWD', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
   var dir = path.join(__dirname, '../logdir');
   var corePath = path.join(process.env.PWD, 'core.56789');
 
@@ -141,6 +157,7 @@ describe('should ok when core dumped to PWD', function () {
 
     }, 90);
   });
+
   after(function() {
     mm.restore();
   });
