@@ -8,7 +8,7 @@ var listCore = require('../../lib/orders/list_core');
 
 describe('/lib/orders/list_core.js', function () {
   var mock =  {
-    isFile: function() {return true},
+    isFile: function() { return true; },
     dev: 2053,
     mode: 16893,
     nlink: 2,
@@ -32,6 +32,7 @@ describe('/lib/orders/list_core.js', function () {
   before(function () {
     mm.data(require('fs'), 'stat', mock);
   });
+
   it('core created before agentx startup will not reported', function (done) {
     var dir = path.join(__dirname, '../logdir');
     var corePath = path.join(dir, 'core.123');
@@ -70,7 +71,7 @@ describe('/lib/orders/list_core.js', function () {
         done();
         fs.unlinkSync(corePath);
       });
-    }, 30)
+    }, 30);
   });
 });
 
@@ -79,7 +80,7 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
   var corePath1 = path.join(dir, 'core.12345');
   var corePath2 = path.join(dir, 'coredump_12345');
   var corePath3 = path.join(dir, 'coredump_23456');
-  var mock =  path.join(dir, "coredump_%e_%P");
+  var mock =  path.join(dir, 'coredump_%e_%P');
   before(function () {
     mm.syncData(require('fs'), 'readFileSync', mock);
   });
@@ -106,7 +107,7 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
         fs.unlinkSync(corePath2);
         fs.unlinkSync(corePath3);
       });
-    }, 60)
+    }, 60);
 
   });
 
@@ -119,7 +120,7 @@ describe('should ok when core dumped to PWD', function () {
   var dir = path.join(__dirname, '../logdir');
   var corePath = path.join(process.env.PWD, 'core.56789');
 
-  var mock =  path.join(dir, "coredump  %e_%P");
+  var mock =  path.join(dir, 'coredump  %e_%P');
   before(function () {
     mm.syncData(require('fs'), 'readFileSync', mock);
   });

@@ -4,3 +4,6 @@ dump.rdb
 coverage
 *.tar.gz
 config_*.json
+core.*
+coredump_*
+.nyc_output/
