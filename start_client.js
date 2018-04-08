@@ -41,19 +41,15 @@ if (!fs.existsSync(argv[0])) {
 nounou(clientPath, {
   args: [argv[0]],
   count: 1
-})
-.on('fork', function (client) {
+}).on('fork', function (client) {
   console.log('[%s] [client:%d] new client start', Date(), client.pid);
-})
-.on('disconnect', function (client) {
+}).on('disconnect', function (client) {
   console.error('[%s] [%s] client:%s disconnect, suicide: %s.',
     Date(), process.pid, client.pid, client.suicide);
-})
-.on('expectedExit', function (client, code, signal) {
+}).on('expectedExit', function (client, code, signal) {
   console.log('[%s] [%s], client %s died (code: %s, signal: %s)', Date(),
     process.pid, client.pid, code, signal);
-})
-.on('unexpectedExit', function (client, code, signal) {
+}).on('unexpectedExit', function (client, code, signal) {
   var err = new Error(util.format('client %s died (code: %s, signal: %s)',
     client.pid, code, signal));
   err.name = 'ClientDiedError';

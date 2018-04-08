@@ -19,7 +19,7 @@ describe('/lib/agent', function () {
     expect(agent.appid).to.be('1');
     expect(agent.server).to.be('ws://server/');
     expect(agent.reconnectDelay).to.be(1000);
-    expect(agent.unknown).to.be(undefined);
+    expect(agent.unknown).to.be();
   });
 
   it('new wss Agent should ok', function () {
@@ -35,7 +35,7 @@ describe('/lib/agent', function () {
     expect(agent.appid).to.be('1');
     expect(agent.server).to.be('wss://agentserver.node.aliyun.com/');
     expect(agent.reconnectDelay).to.be(1000);
-    expect(agent.unknown).to.be(undefined);
+    expect(agent.unknown).to.be();
   });
 
   it('new wss Agent with wss prefix should ok', function () {
@@ -51,7 +51,7 @@ describe('/lib/agent', function () {
     expect(agent.appid).to.be('1');
     expect(agent.server).to.be('wss://abc');
     expect(agent.reconnectDelay).to.be(1000);
-    expect(agent.unknown).to.be(undefined);
+    expect(agent.unknown).to.be();
   });
 
   var wss;

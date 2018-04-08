@@ -25,7 +25,7 @@
     "no-shadow-restricted-names": 2,
     "no-undef-init": 2,
     "no-use-before-define": 2,
-    "no-unused-vars": 2,
+    "no-unused-vars": [2, {"args": "none"}],
     "no-undefined": 2,
     "no-undef": 2,
     "global-require": 0,
