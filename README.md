@@ -5,7 +5,7 @@ AgentX是alinode团队开发的agent命令程序，用于协助alinode的性能�
 
 - [![Build Status](https://travis-ci.org/aliyun-node/agentx.png?branch=master)](https://travis-ci.org/aliyun-node/agentx)
 - [![Dependencies Status](https://david-dm.org/aliyun-node/agentx.png)](https://david-dm.org/aliyun-node/agentx)
-- [![Coverage Status](https://coveralls.io/repos/aliyun-node/agentx/badge.png)](https://coveralls.io/r/aliyun-node/agentx)
+- [![codecov](https://codecov.io/gh/aliyun-node/agentx/branch/master/graph/badge.svg)](https://codecov.io/gh/aliyun-node/agentx)
 
 ## Installation
 
