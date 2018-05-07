@@ -1,6 +1,6 @@
 {
   "name": "agentx",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "agentx is powered by alinode",
   "scripts": {
     "lint": "eslint lib test *.js",
