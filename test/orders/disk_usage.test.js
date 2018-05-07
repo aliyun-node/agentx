@@ -90,4 +90,40 @@ describe('/lib/orders/disk_usage.js', function () {
       mm.restore();
     });
   });
+
+
+  describe('user specify monitored disk', function () {
+    var mock_stdout = [
+      'Filesystem     1024-blocks      Used Available Capacity Mounted on',
+      '/dev/sda3        580507708 271079084 309428624      47% /data'
+    ].join('\n');
+
+    before(function () {
+      disk.init({
+        disks: ['/data'],
+        cmddir: path.join(__dirname, '../cmddir')
+      });
+
+      mm.data(require('../../lib/utils'), 'execFile', mock_stdout);
+    });
+
+    it('should ok', function (done) {
+      disk.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('disk_usage');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.property('used_percent');
+        expect(metrics.used_percent).equal(47);
+        expect(metrics['/data']).equal(47);
+        done();
+      });
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
 });
