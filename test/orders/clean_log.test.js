@@ -61,6 +61,8 @@ describe('/lib/orders/clean_log.js', function () {
       expect(fs.existsSync(oldfile5)).to.be(true);
       expect(fs.existsSync(oldfile6)).to.be(true);
 
+      function noop() { }
+
       fs.unlink(oldfile1, noop);
       fs.unlink(oldfile2, noop);
       fs.unlink(oldfile3, noop);
