@@ -13,13 +13,13 @@ var cleaner = rewire('../../lib/orders/clean_log');
 
 var oldfile1 = path.join(__dirname, '../logdir/node-20180225.log');
 var oldfile2 = path.join(__dirname, '../logdir/access-20180225.log');
-var oldfile3 = path.join(__dirname, '../logdir/npp-tracing-20180225.log');
+var oldfile3 = path.join(__dirname, '../logdir/tracing-20180225.log');
 var oldfile4 = path.join(__dirname, '../logdir/node-20180226.log');
 var oldfile5 = path.join(__dirname, '../logdir/access-20180226.log');
-var oldfile6 = path.join(__dirname, '../logdir/npp-tracing-20180226.log');
+var oldfile6 = path.join(__dirname, '../logdir/tracing-20180226.log');
 var oldfile7 = path.join(__dirname, '../logdir/node-20180227.log');
 var oldfile8 = path.join(__dirname, '../logdir/access-20180227.log');
-var oldfile9 = path.join(__dirname, '../logdir/npp-tracing-20180227.log');
+var oldfile9 = path.join(__dirname, '../logdir/tracing-20180227.log');
 
 // the inexist file
 var oldfile10 = path.join(__dirname, '../logdir/node-20151202.log');

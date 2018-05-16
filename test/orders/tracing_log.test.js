@@ -28,7 +28,7 @@ describe('/lib/orders/tracing_log.js', function () {
 
   it('should ok', function (done) {
     // backup logfile
-    var logPath = path.join(__dirname, '../logdir/npp-tracing-20180515.log');
+    var logPath = path.join(__dirname, '../logdir/tracing-20180515.log');
     var log = fs.readFileSync(logPath, 'utf8');
 
     tracingLog.run(function (err, params) {
@@ -85,7 +85,7 @@ describe('/lib/orders/tracing_log.js', function () {
 
   it('getCurrentLogPath should ok', function () {
     var getCurrentLogPath = tracingLog.__get__('getCurrentLogPath');
-    var logPath = path.join(__dirname, '../logdir/npp-tracing-20180515.log');
+    var logPath = path.join(__dirname, '../logdir/tracing-20180515.log');
     expect(getCurrentLogPath()).to.be(logPath);
   });
 
