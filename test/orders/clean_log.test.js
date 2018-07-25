@@ -21,6 +21,7 @@ var oldfile6 = path.join(__dirname, '../logdir/access-20180227.log');
 
 // the inexist file
 var oldfile7 = path.join(__dirname, '../logdir/node-20151202.log');
+var noop = function () {};
 
 describe('/lib/orders/clean_log.js', function () {
   before(function () {
@@ -60,12 +61,12 @@ describe('/lib/orders/clean_log.js', function () {
       expect(fs.existsSync(oldfile5)).to.be(true);
       expect(fs.existsSync(oldfile6)).to.be(true);
 
-      fs.unlink(oldfile1);
-      fs.unlink(oldfile2);
-      fs.unlink(oldfile3);
-      fs.unlink(oldfile4);
-      fs.unlink(oldfile5);
-      fs.unlink(oldfile6);
+      fs.unlink(oldfile1, noop);
+      fs.unlink(oldfile2, noop);
+      fs.unlink(oldfile3, noop);
+      fs.unlink(oldfile4, noop);
+      fs.unlink(oldfile5, noop);
+      fs.unlink(oldfile6, noop);
 
       done();
     });
