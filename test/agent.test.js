@@ -4,6 +4,9 @@ var path = require('path');
 var expect = require('expect.js');
 var WebSocketServer = require('ws').Server;
 var Agent = require('../lib/agent');
+var utils = require('../lib/utils');
+var mm = require('mm');
+var co = require('co');
 
 describe('/lib/agent', function () {
   it('new Agent should ok', function () {
@@ -20,6 +23,25 @@ describe('/lib/agent', function () {
     expect(agent.server).to.be('ws://server/');
     expect(agent.reconnectDelay).to.be(1000);
     expect(agent.unknown).to.be();
+  });
+
+  it('new Agent should not ok with reportInterval < 60000', function () {
+    var config = {
+      appid: 1,
+      server: 'server',
+      reconnectDelay: 1,
+      unknown: 'hehe',
+      logdir: '/tmp',
+      cmddir: path.join(__dirname, 'cmddir'),
+      reportInterval: 10
+    };
+    try {
+      var agent = new Agent(config);
+      agent.run();
+    } catch (err) {
+      expect(err.message).to.be.ok();
+      expect(err.message).to.be('report interval should not less than 60s');
+    }
   });
 
   it('new wss Agent should ok', function () {
@@ -55,27 +77,45 @@ describe('/lib/agent', function () {
   });
 
   var wss;
-  before(function () {
-    wss = new WebSocketServer({ port: 8990 });
+  before(co.wrap(function* () {
+    mm(Agent.prototype, 'handleMonitor', function () { });
+    mm(Agent.prototype, 'startHeartbeat', function () { });
+    mm(Agent.prototype, 'reconnect', function () { });
+    yield new Promise(resolve => {
+      wss = new WebSocketServer({ port: 8990 }, function () {
+        resolve();
+      });
+    });
     wss.on('connection', function connection(ws) {
       ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-        ws.close();
+        console.log('receive message: %s', message);
+        message = JSON.parse(message);
+        expect(typeof message === 'object').to.be.ok();
+        if (message.type === 'register') {
+          expect(message.params.pid).to.be.ok();
+          expect(message.params.version).to.be.ok();
+          var result = { type: 'result', params: { 'result': 'REG_OK' } };
+          var signature = utils.sha1(JSON.stringify(result), '2');
+          result.signature = signature;
+          ws.send(JSON.stringify(result));
+        }
+        if (message.type === 'close') {
+          ws.close();
+        }
       });
-
-      ws.send('{"hello":"world"}');
     });
-  });
+  }));
 
   after(function () {
     try {
+      mm.restore();
       wss.close();
     } catch (ex) {
       console.log(ex);
     }
   });
 
-  it('run should ok', function (done) {
+  it('run should ok', co.wrap(function* () {
     var agent = new Agent({
       server: 'localhost:8990',
       appid: 1,
@@ -85,10 +125,27 @@ describe('/lib/agent', function () {
     });
 
     agent.run();
-    done();
-  });
+    var result = yield new Promise((resolve, reject) => {
+      var interval;
+      var timer;
+      timer = setTimeout(() => {
+        interval && clearInterval(interval);
+        resolve('failed');
+      }, 1000);
+      interval = setInterval(() => {
+        if (agent.state === 'work') {
+          interval && clearInterval(interval);
+          timer && clearTimeout(timer);
+          resolve('ok');
+        }
+      }, 100);
+    });
+    agent.teardown();
+    agent.notReconnect = true;
+    expect(result).to.be('ok');
+  }));
 
-  it('should not exit when run with libMode', function (done) {
+  it('should not exit when run with libMode', co.wrap(function* () {
     var agent = new Agent({
       libMode: true,
       server: 'localhost:8990',
@@ -99,6 +156,22 @@ describe('/lib/agent', function () {
     });
 
     agent.run();
+    var result = yield new Promise((resolve, reject) => {
+      var interval;
+      var timer;
+      timer = setTimeout(() => {
+        interval && clearInterval(interval);
+        resolve('failed');
+      }, 1000);
+      interval = setInterval(() => {
+        if (agent.state === 'work') {
+          interval && clearInterval(interval);
+          timer && clearTimeout(timer);
+          resolve('ok');
+        }
+      }, 100);
+    });
+    expect(result).to.be('ok');
     // mock signature not exist
     agent.onMessage({
       signature: null,
@@ -128,6 +201,8 @@ describe('/lib/agent', function () {
     var signature2 = agent.signature(msg2);
     msg2.signature = signature2;
     agent.onMessage(msg2);
-    done();
-  });
+    agent.sendMessage({type: 'close'});
+    agent.notReconnect = true;
+    agent.teardown();
+  }));
 });

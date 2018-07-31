@@ -4,7 +4,7 @@
   "description": "agentx is powered by alinode",
   "scripts": {
     "lint": "eslint lib test *.js",
-    "test": "mocha -R spec test/**/*.test.js test/*.test.js",
+    "test": "mocha -t 3000 -R spec test/**/*.test.js test/*.test.js",
     "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -t 3000 -R spec test/**/*.test.js test/*.test.js",
     "ci": "npm run lint && npm run cov && codecov"
   },
@@ -22,6 +22,7 @@
     "split2": "^2.2.0"
   },
   "devDependencies": {
+    "co": "^4.6.0",
     "codecov": "^3.0.0",
     "eslint": "^4.19.1",
     "expect.js": "^0.3.1",
