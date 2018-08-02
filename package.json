@@ -4,9 +4,10 @@
   "description": "agentx is powered by alinode",
   "scripts": {
     "lint": "eslint lib test *.js",
-    "test": "mocha -t 3000 -R spec test/**/*.test.js test/*.test.js",
-    "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -t 3000 -R spec test/**/*.test.js test/*.test.js",
-    "ci": "npm run lint && npm run cov && codecov"
+    "test": "mocha -t 5000 -R spec test/**/*.test.js test/*.test.js",
+    "cov": "nyc --reporter=html --reporter=text --reporter=lcov mocha -t 5000 -R spec test/**/*.test.js test/*.test.js",
+    "ci": "npm run lint && npm run cov && codecov",
+    "ut": "mocha -t 5000 -R spec"
   },
   "bin": {
     "agentx": "./start_client.js"
