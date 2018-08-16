@@ -11,6 +11,39 @@ describe('/lib/orders/list_core.js', function () {
     return;
   }
 
+  before(function () {
+    mm(require('child_process'), 'exec', function(cmd, callback){callback(null, '');});
+    delete require.cache[require.resolve('../../lib/orders/list_core')];
+    delete require.cache[require.resolve('child_process')];
+    listCore = require('../../lib/orders/list_core');
+    console.log(require('child_process').exec.toString());
+  });
+
+  it('no coredirs', function (done) {
+    listCore.init({coredir: []});
+    listCore.run(function (err, params) {
+      expect(err).not.to.be.ok();
+      expect(params.type).to.be('coredump');
+      expect(params.metrics).to.be(null);
+      done();
+    });
+  });
+
+  after(function() {
+    mm.restore();
+    delete require.cache[require.resolve('../../lib/orders/list_core')];
+    delete require.cache[require.resolve('child_process')];
+    listCore = require('../../lib/orders/list_core');
+  });
+});
+
+
+
+describe('/lib/orders/list_core.js', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
   var mock =  {
     isFile: function() { return true; },
     dev: 2053,
@@ -59,6 +92,27 @@ describe('/lib/orders/list_core.js', function () {
 
 });
 
+
+describe('/lib/orders/list_core.js', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
+  it('should ok coredir not specified', function (done) {
+    setTimeout(function() {
+      listCore.init({coredir: []});
+      listCore.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('coredump');
+        expect(params.metrics).to.be.ok();
+        expect(params.metrics.data.length).to.be(0);
+        done();
+      });
+    }, 30);
+  });
+});
+
+
 describe('/lib/orders/list_core.js', function () {
   if (require('os').platform() !== 'linux') {
     return;
@@ -69,6 +123,52 @@ describe('/lib/orders/list_core.js', function () {
     var corePath = path.join(dir, 'core.123');
     setTimeout(function() {
       listCore.init({coredir: [path.join(__dirname, '../logdir')]});
+      fs.writeFileSync(corePath, '');
+      listCore.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('coredump');
+        expect(params.metrics).to.be.ok();
+        expect(params.metrics.data.length).to.be(1);
+        expect(params.metrics.data[0].path).to.be(corePath);
+        done();
+        fs.unlinkSync(corePath);
+      });
+    }, 30);
+  });
+});
+
+
+describe('/lib/orders/list_core.js', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
+  it('should ok when coredir not exists', function (done) {
+    setTimeout(function() {
+      listCore.init({coredir: [path.join(__dirname, '../non-logdir')]});
+      listCore.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('coredump');
+        expect(params.metrics).to.be.ok();
+        expect(params.metrics.data.length).to.be(0);
+        done();
+      });
+    }, 30);
+  });
+});
+
+
+describe('/lib/orders/list_core.js', function () {
+  if (require('os').platform() !== 'linux') {
+    return;
+  }
+
+  it('should ok when duplicate dir configured', function (done) {
+    var dir = path.join(__dirname, '../logdir');
+    var corePath = path.join(dir, 'core.123');
+    setTimeout(function() {
+      var d = path.join(__dirname, '../logdir');
+      listCore.init({coredir: [d, d, d]});
       fs.writeFileSync(corePath, '');
       listCore.run(function (err, params) {
         expect(err).not.to.be.ok();
