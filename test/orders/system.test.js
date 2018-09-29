@@ -165,6 +165,8 @@ describe('/lib/orders/system', function () {
       const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
       const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
       const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
+      const dockerenv_path = '/.dockerenv';
+      const self_cgroup_path = '/proc/self/cgroup';
       if (f === period_path) {
         return false;
       }
@@ -172,6 +174,12 @@ describe('/lib/orders/system', function () {
         return true;
       }
       if (f === cpus_path) {
+        return true;
+      }
+      if (f === dockerenv_path) {
+        return false;
+      }
+      if (f === self_cgroup_path) {
         return true;
       }
     };
@@ -210,6 +218,8 @@ describe('/lib/orders/system', function () {
       const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
       const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
       const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
+      const dockerenv_path = '/.dockerenv';
+      const self_cgroup_path = '/proc/self/cgroup';
       if (f === period_path) {
         return true;
       }
@@ -217,6 +227,12 @@ describe('/lib/orders/system', function () {
         return false;
       }
       if (f === cpus_path) {
+        return true;
+      }
+      if (f === dockerenv_path) {
+        return false;
+      }
+      if (f === self_cgroup_path) {
         return true;
       }
     };
