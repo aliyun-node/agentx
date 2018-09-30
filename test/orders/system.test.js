@@ -455,6 +455,12 @@ describe('/lib/orders/system', function () {
       if (x === cpus_path) {
         return '1-2, 4';
       }
+      if (x === mem_limit_path) {
+        return (1024 * 1024 * 100).toString();
+      }
+      if (x === mem_soft_limit_path) {
+        return (1024 * 1024 * 96).toString();
+      }
       return '::';
     };
 
@@ -468,12 +474,6 @@ describe('/lib/orders/system', function () {
         return cb(null, mock_mem);
       }
 
-      if (f === mem_limit_path) {
-        return cb(null, (1024 * 1024 * 100).toString());
-      }
-      if (f === mem_soft_limit_path) {
-        return cb(null, (1024 * 1024 * 96).toString());
-      }
       if (f === mem_used_path) {
         return cb(null, (1024 * 1024 * 48).toString());
       }
@@ -526,6 +526,12 @@ describe('/lib/orders/system', function () {
       if (x === cpus_path) {
         return '1-2, 4';
       }
+      if (x === mem_limit_path) {
+        return (1024 * 1024 * 100).toString();
+      }
+      if (x === mem_soft_limit_path) {
+        return (1024 * 1024 * 100).toString();
+      }
       return '::';
     };
 
@@ -539,12 +545,6 @@ describe('/lib/orders/system', function () {
         return cb(null, mock_mem);
       }
 
-      if (f === mem_limit_path) {
-        return cb(null, (1024 * 1024 * 100).toString());
-      }
-      if (f === mem_soft_limit_path) {
-        return cb(null, (1024 * 1024 * 100).toString());
-      }
       if (f === mem_used_path) {
         return cb(null, (1024 * 1024 * 48).toString());
       }
@@ -595,6 +595,7 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('fs'), 'existsSync', false);
       // type linux
       mm.syncData(require('os'), 'type', 'Linux');
+      mm.syncData(require('os'), 'totalmem', 8041357312);
     });
 
     it('should ok', function (done) {
