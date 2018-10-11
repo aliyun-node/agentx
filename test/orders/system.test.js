@@ -612,7 +612,7 @@ describe('/lib/orders/system', function () {
         expect(metrics['load15']).equal(0.5);
         expect(metrics['totalmem']).equal(8041357312);
         expect(metrics['freemem']).equal(1922719744);
-        expect(metrics).to.have.key('cpu');
+        expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
         done();
       });
     });
