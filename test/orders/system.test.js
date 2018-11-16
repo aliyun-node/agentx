@@ -20,6 +20,52 @@ var mock_cpu = [
   'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
 ].join('\n');
 
+var mock_cpu_1 = [
+  'cpu  5313978 56110 1292246 14983316 177088 0 12355 0 0',
+  'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
+  'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
+  'cpu2 1350005 9930 355196 1544412 13443 0 4575 0 0 0',
+  'cpu3 1299601 28697 293578 1553694 39495 0 3187 0 0 0',
+  'intr 139191038 10 116186 0 0 0 0 0 0 1 25708 0 0 1640341 0 0 0 0 0 0 0 0 0 0 254 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 181199 1705141 102 0 6657744 20 5961153 127 9709 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0',
+  'ctxt 481278166',
+  'btime 1537152546',
+  'processes 163808',
+  'procs_running 1',
+  'procs_blocked 0',
+  'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
+].join('\n');
+
+var mock_cpu_2 = [
+  'cpu  5313978 56110 1292246 14983316 177088 0 12355 0',
+  'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
+  'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
+  'cpu2 1350005 9930 355196 1544412 13443 0 4575 0 0 0',
+  'cpu3 1299601 28697 293578 1553694 39495 0 3187 0 0 0',
+  'intr 139191038 10 116186 0 0 0 0 0 0 1 25708 0 0 1640341 0 0 0 0 0 0 0 0 0 0 254 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 181199 1705141 102 0 6657744 20 5961153 127 9709 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0',
+  'ctxt 481278166',
+  'btime 1537152546',
+  'processes 163808',
+  'procs_running 1',
+  'procs_blocked 0',
+  'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
+].join('\n');
+
+var mock_cpu_3 = [
+  'cpu  5313978 56110 1292246 14983316 177088 0 12355',
+  'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
+  'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
+  'cpu2 1350005 9930 355196 1544412 13443 0 4575 0 0 0',
+  'cpu3 1299601 28697 293578 1553694 39495 0 3187 0 0 0',
+  'intr 139191038 10 116186 0 0 0 0 0 0 1 25708 0 0 1640341 0 0 0 0 0 0 0 0 0 0 254 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 181199 1705141 102 0 6657744 20 5961153 127 9709 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0',
+  'ctxt 481278166',
+  'btime 1537152546',
+  'processes 163808',
+  'procs_running 1',
+  'procs_blocked 0',
+  'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
+].join('\n');
+
+
 var mock_mem = [
   'MemTotal:        7852888 kB',
   'MemFree:          635184 kB',
@@ -620,6 +666,143 @@ describe('/lib/orders/system', function () {
       mm.restore();
     });
   });
+
+  describe('linux memory cpu load 1', function () {
+    var mock = function(f, options,cb) {
+      if (f === '/proc/stat') {
+        return cb(null, mock_cpu_1);
+      }
+      if (f === '/proc/loadavg') {
+        return cb(null, mock_load);
+      } if (f === '/proc/meminfo') {
+        return cb(null, mock_mem);
+      }
+      return '';
+    };
+
+    before(function () {
+      mm(require('fs'), 'readFile', mock);
+      mm.syncData(require('fs'), 'readFileSync', '');
+      mm.syncData(require('fs'), 'existsSync', false);
+      // type linux
+      mm.syncData(require('os'), 'type', 'Linux');
+      mm.syncData(require('os'), 'totalmem', 8041357312);
+    });
+
+    it('should ok', function (done) {
+      system.init();
+      system.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('cpu_count');
+        expect(metrics['load1']).equal(0.51);
+        expect(metrics['load5']).equal(0.36);
+        expect(metrics['load15']).equal(0.5);
+        expect(metrics['totalmem']).equal(8041357312);
+        expect(metrics['freemem']).equal(1922719744);
+        expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
+        done();
+      });
+    });
+    after(function() {
+      mm.restore();
+    });
+  });
+
+  describe('linux memory cpu load 2', function () {
+    var mock = function(f, options,cb) {
+      if (f === '/proc/stat') {
+        return cb(null, mock_cpu_2);
+      }
+      if (f === '/proc/loadavg') {
+        return cb(null, mock_load);
+      } if (f === '/proc/meminfo') {
+        return cb(null, mock_mem);
+      }
+      return '';
+    };
+
+    before(function () {
+      mm(require('fs'), 'readFile', mock);
+      mm.syncData(require('fs'), 'readFileSync', '');
+      mm.syncData(require('fs'), 'existsSync', false);
+      // type linux
+      mm.syncData(require('os'), 'type', 'Linux');
+      mm.syncData(require('os'), 'totalmem', 8041357312);
+    });
+
+    it('should ok', function (done) {
+      system.init();
+      system.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('cpu_count');
+        expect(metrics['load1']).equal(0.51);
+        expect(metrics['load5']).equal(0.36);
+        expect(metrics['load15']).equal(0.5);
+        expect(metrics['totalmem']).equal(8041357312);
+        expect(metrics['freemem']).equal(1922719744);
+        expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
+        done();
+      });
+    });
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
+  describe('linux memory cpu load 3', function () {
+    var mock = function(f, options,cb) {
+      if (f === '/proc/stat') {
+        return cb(null, mock_cpu_3);
+      }
+      if (f === '/proc/loadavg') {
+        return cb(null, mock_load);
+      } if (f === '/proc/meminfo') {
+        return cb(null, mock_mem);
+      }
+      return '';
+    };
+
+    before(function () {
+      mm(require('fs'), 'readFile', mock);
+      mm.syncData(require('fs'), 'readFileSync', '');
+      mm.syncData(require('fs'), 'existsSync', false);
+      // type linux
+      mm.syncData(require('os'), 'type', 'Linux');
+      mm.syncData(require('os'), 'totalmem', 8041357312);
+    });
+
+    it('should ok', function (done) {
+      system.init();
+      system.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('system');
+        expect(params.metrics).to.be.ok();
+        var metrics = params.metrics;
+        expect(metrics).to.have.key('uptime');
+        expect(metrics).to.have.key('cpu_count');
+        expect(metrics['load1']).equal(0.51);
+        expect(metrics['load5']).equal(0.36);
+        expect(metrics['load15']).equal(0.5);
+        expect(metrics['totalmem']).equal(8041357312);
+        expect(metrics['freemem']).equal(1922719744);
+        expect(metrics['cpu']).equal(0);
+        done();
+      });
+    });
+    after(function() {
+      mm.restore();
+    });
+  });
+
 
   describe('mock linux loadavg nok', function () {
     var mock = '110.51 aa 0.50 2/1253 58';
