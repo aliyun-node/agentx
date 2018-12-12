@@ -117,6 +117,129 @@ describe('/lib/orders/system', function () {
   });
 
 
+  describe('mock docker isDocker true', function () {
+    var mock = [ '12:pids:/init.scope',
+      '11:hugetlb:/',
+      '10:freezer:/',
+      '9:devices:/init.scope',
+      '8:perf_event:/',
+      '7:net_cls,net_prio:/',
+      '6:memory:/init.scope',
+      '5:rdma:/',
+      '4:blkio:/init.scope',
+      '3:cpu,cpuacct:/init.scope',
+      '2:cpuset:/',
+      '1:name=systemd:/init.scope'].join('\n');
+
+    before(function() {
+      mm.syncData(require('fs'), 'readFileSync', mock);
+      mm.syncData(require('fs'), 'existsSync', true);
+    });
+
+    it('should ok', function(done) {
+      system.init({isDocker: true});
+      expect(system.isDocker).equal(true);
+      done();
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+  describe('mock docker no cgroup no dockerenv isDocker true', function () {
+    var mock = [ '12:pids:/init.scope',
+      '11:hugetlb:/',
+      '10:freezer:/',
+      '9:devices:/init.scope',
+      '8:perf_event:/',
+      '7:net_cls,net_prio:/',
+      '6:memory:/init.scope',
+      '5:rdma:/',
+      '4:blkio:/init.scope',
+      '3:cpu,cpuacct:/init.scope',
+      '2:cpuset:/',
+      '1:name=systemd:/init.scope'].join('\n');
+
+    before(function() {
+      mm.syncData(require('fs'), 'readFileSync', mock);
+      mm.syncData(require('fs'), 'existsSync', false);
+    });
+
+    it('should ok', function(done) {
+      system.init({isDocker: true});
+      expect(system.isDocker).equal(true);
+      done();
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+  describe('mock docker no cgroup no dockerenv isDocker string', function () {
+    var mock = [ '12:pids:/init.scope',
+      '11:hugetlb:/',
+      '10:freezer:/',
+      '9:devices:/init.scope',
+      '8:perf_event:/',
+      '7:net_cls,net_prio:/',
+      '6:memory:/init.scope',
+      '5:rdma:/',
+      '4:blkio:/init.scope',
+      '3:cpu,cpuacct:/init.scope',
+      '2:cpuset:/',
+      '1:name=systemd:/init.scope'].join('\n');
+
+    before(function() {
+      mm.syncData(require('fs'), 'readFileSync', mock);
+      mm.syncData(require('fs'), 'existsSync', false);
+    });
+
+    it('should ok', function(done) {
+      system.init({isDocker: 'exists'});
+      expect(system.isDocker).equal(true);
+      done();
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
+
+  describe('mock docker isDocker false', function () {
+    var mock = [ '12:pids:/init.scope',
+      '11:hugetlb:/',
+      '10:freezer:/',
+      '9:devices:/init.scope',
+      '8:perf_event:/',
+      '7:net_cls,net_prio:/',
+      '6:memory:/init.scope',
+      '5:rdma:/',
+      '4:blkio:/init.scope',
+      '3:cpu,cpuacct:/init.scope',
+      '2:cpuset:/',
+      '1:name=systemd:/init.scope'].join('\n');
+
+    before(function() {
+      mm.syncData(require('fs'), 'readFileSync', mock);
+      mm.syncData(require('fs'), 'existsSync', true);
+    });
+
+    it('should ok', function(done) {
+      system.init({isDocker: false});
+      expect(system.isDocker).equal(false);
+      done();
+    });
+
+    after(function() {
+      mm.restore();
+    });
+  });
+
+
   describe('mock docker dockerenv', function () {
     var mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
@@ -391,6 +514,7 @@ describe('/lib/orders/system', function () {
 
     before(function() {
       mm(require('fs'), 'readFileSync', mock);
+      mm.syncData(require('os'), 'cpus', ['cpu0', 'cpu1', 'cpu2', 'cpu3']);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
