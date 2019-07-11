@@ -58,7 +58,8 @@ describe('/lib/orders/node_log.js', function () {
       'map_space_used: 1660736, map_space_available: 0, ' +
       'map_space_committed: 2063872, lo_space_size: 0, lo_space_used: 0, ' +
       'lo_space_available: 1470086912, lo_space_committed: 0, ' +
-      'amount_of_external_allocated_memory: 43056';
+      'amount_of_external_allocated_memory: 43056\n' +
+      '[2018-03-01 20:25:42.682036] [info] [other] [45020] cpu_usage(%) now: 1.0145, cpu_15: 0.2345, cpu_30: 0.27, cpu_60: 2';
 
     // append sth
     fs.appendFileSync(logPath, append);
@@ -69,9 +70,21 @@ describe('/lib/orders/node_log.js', function () {
       expect(params.metrics).to.be.ok();
       var metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
-      expect(metrics.data).to.have.length(31);
+      expect(metrics.data).to.have.length(35);
       metrics.data.forEach(function (item) {
         expect(item.pid).to.be('45020');
+        if (item.item === 'now') {
+          expect(item.value).to.be(1.01);
+        }
+        if (item.item === 'cpu_15') {
+          expect(item.value).to.be(0.23);
+        }
+        if (item.item === 'cpu_30') {
+          expect(item.value).to.be(0.27);
+        }
+        if (item.item === 'cpu_60') {
+          expect(item.value).to.be(2);
+        }
       });
 
       // restore log file
