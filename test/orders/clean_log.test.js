@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var cp = require('child_process');
 
 var expect = require('expect.js');
 var rewire = require('rewire');
@@ -10,6 +11,8 @@ var mm = require('mm');
 var helper = require('../../lib/utils');
 
 var cleaner = rewire('../../lib/orders/clean_log');
+
+var unixServerPath = path.join(__dirname, '../fixtures/unixServer.js');
 
 var oldfile1 = path.join(__dirname, '../logdir/node-20180225.log');
 var oldfile2 = path.join(__dirname, '../logdir/access-20180225.log');
@@ -23,6 +26,9 @@ var oldfile9 = path.join(__dirname, '../logdir/tracing-20180227.log');
 
 // the inexist file
 var oldfile10 = path.join(__dirname, '../logdir/node-20151202.log');
+
+var socketPids = [];
+var socketsLength = 10;
 
 describe('/lib/orders/clean_log.js', function () {
   before(function () {
@@ -43,6 +49,12 @@ describe('/lib/orders/clean_log.js', function () {
     fs.writeFileSync(oldfile7, 'empty file');
     fs.writeFileSync(oldfile8, 'empty file');
     fs.writeFileSync(oldfile9, 'empty file');
+
+    // create domain sockets
+    for (let i = 0; i < socketsLength; i++) {
+      const child = cp.spawnSync('node', [unixServerPath]);
+      socketPids.push(child.pid);
+    }
   });
 
   after(function () {
@@ -59,6 +71,12 @@ describe('/lib/orders/clean_log.js', function () {
     expect(fs.existsSync(oldfile7)).to.be(true);
     expect(fs.existsSync(oldfile8)).to.be(true);
     expect(fs.existsSync(oldfile9)).to.be(true);
+
+    for(let i = 0; i < socketsLength; i++) {
+      const socketPath = path.join(__dirname, `../logdir/alinode-uds-path-${socketPids[i]}`);
+      expect(fs.existsSync(socketPath)).to.be(true);
+    }
+
     cleaner.run(function (err) {
       expect(err).not.to.be.ok();
       expect(fs.existsSync(oldfile1)).to.be(false);
@@ -70,6 +88,11 @@ describe('/lib/orders/clean_log.js', function () {
       expect(fs.existsSync(oldfile7)).to.be(true);
       expect(fs.existsSync(oldfile8)).to.be(true);
       expect(fs.existsSync(oldfile9)).to.be(true);
+
+      for(let i = 0; i < socketsLength; i++) {
+        const socketPath = path.join(__dirname, `../logdir/alinode-uds-path-${socketPids[i]}`);
+        expect(fs.existsSync(socketPath)).to.be(false);
+      }
 
       function noop() { }
 
