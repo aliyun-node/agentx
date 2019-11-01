@@ -12,7 +12,7 @@ describe('/lib/orders/list_core.js', function () {
   }
 
   before(function () {
-    mm(require('child_process'), 'exec', function(cmd, callback){callback(null, '');});
+    mm(require('child_process'), 'exec', function (cmd, callback) { callback(null, ''); });
     delete require.cache[require.resolve('../../lib/orders/list_core')];
     delete require.cache[require.resolve('child_process')];
     listCore = require('../../lib/orders/list_core');
@@ -20,7 +20,7 @@ describe('/lib/orders/list_core.js', function () {
   });
 
   it('no coredirs', function (done) {
-    listCore.init({coredir: []});
+    listCore.init({ coredir: [] });
     listCore.run(function (err, params) {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('coredump');
@@ -29,7 +29,7 @@ describe('/lib/orders/list_core.js', function () {
     });
   });
 
-  after(function() {
+  after(function () {
     mm.restore();
     delete require.cache[require.resolve('../../lib/orders/list_core')];
     delete require.cache[require.resolve('child_process')];
@@ -44,8 +44,8 @@ describe('/lib/orders/list_core.js', function () {
     return;
   }
 
-  var mock =  {
-    isFile: function() { return true; },
+  var mock = {
+    isFile: function () { return true; },
     dev: 2053,
     mode: 16893,
     nlink: 2,
@@ -74,7 +74,7 @@ describe('/lib/orders/list_core.js', function () {
     var dir = path.join(__dirname, '../logdir');
     var corePath = path.join(dir, 'core.123');
     fs.writeFileSync(corePath, '');
-    listCore.init({coredir: [path.join(__dirname, '../logdir')]});
+    listCore.init({ coredir: [path.join(__dirname, '../logdir')] });
 
     listCore.run(function (err, params) {
       expect(err).not.to.be.ok();
@@ -86,7 +86,7 @@ describe('/lib/orders/list_core.js', function () {
     });
   });
 
-  after(function() {
+  after(function () {
     mm.restore();
   });
 
@@ -99,8 +99,8 @@ describe('/lib/orders/list_core.js', function () {
   }
 
   it('should ok coredir not specified', function (done) {
-    setTimeout(function() {
-      listCore.init({coredir: []});
+    setTimeout(function () {
+      listCore.init({ coredir: [] });
       listCore.run(function (err, params) {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('coredump');
@@ -121,8 +121,8 @@ describe('/lib/orders/list_core.js', function () {
   it('should ok when specify the coredir', function (done) {
     var dir = path.join(__dirname, '../logdir');
     var corePath = path.join(dir, 'core.123');
-    setTimeout(function() {
-      listCore.init({coredir: [path.join(__dirname, '../logdir')]});
+    setTimeout(function () {
+      listCore.init({ coredir: [path.join(__dirname, '../logdir')] });
       fs.writeFileSync(corePath, '');
       listCore.run(function (err, params) {
         expect(err).not.to.be.ok();
@@ -144,8 +144,8 @@ describe('/lib/orders/list_core.js', function () {
   }
 
   it('should ok when coredir not exists', function (done) {
-    setTimeout(function() {
-      listCore.init({coredir: [path.join(__dirname, '../non-logdir')]});
+    setTimeout(function () {
+      listCore.init({ coredir: [path.join(__dirname, '../non-logdir')] });
       listCore.run(function (err, params) {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('coredump');
@@ -155,6 +155,22 @@ describe('/lib/orders/list_core.js', function () {
       });
     }, 30);
   });
+
+  it('should ok when coredir is empty', function (done) {
+    setTimeout(function () {
+      listCore.init({
+        coredir: [
+          path.join(__dirname, '../logdir/empty')
+        ]
+      });
+      listCore.run(function (err, params) {
+        expect(err).not.to.be.ok();
+        expect(params.type).to.be('coredump');
+        expect(params.metrics.ok).to.be(true);
+        done();
+      });
+    });
+  }, 30);
 });
 
 
@@ -166,9 +182,9 @@ describe('/lib/orders/list_core.js', function () {
   it('should ok when duplicate dir configured', function (done) {
     var dir = path.join(__dirname, '../logdir');
     var corePath = path.join(dir, 'core.123');
-    setTimeout(function() {
+    setTimeout(function () {
       var d = path.join(__dirname, '../logdir');
-      listCore.init({coredir: [d, d, d]});
+      listCore.init({ coredir: [d, d, d] });
       fs.writeFileSync(corePath, '');
       listCore.run(function (err, params) {
         expect(err).not.to.be.ok();
@@ -192,14 +208,14 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
   var corePath1 = path.join(dir, 'core.12345');
   var corePath2 = path.join(dir, 'coredump_12345');
   var corePath3 = path.join(dir, 'coredump_23456');
-  var mock =  path.join(dir, 'coredump_%e_%P');
+  var mock = path.join(dir, 'coredump_%e_%P');
   before(function () {
     mm.syncData(require('fs'), 'readFileSync', mock);
   });
 
   it('should ok when specify the core dir', function (done) {
 
-    setTimeout(function(){
+    setTimeout(function () {
       listCore.init();
       fs.writeFileSync(corePath1, '');
       fs.writeFileSync(corePath2, '');
@@ -223,7 +239,7 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
 
   });
 
-  after(function() {
+  after(function () {
     mm.restore();
   });
 });
@@ -240,7 +256,7 @@ describe('should ok when core dumped to PWD', function () {
     console.log('cordir:', listCore.coredir);
 
     fs.writeFileSync(corePath, '');
-    setTimeout(function() {
+    setTimeout(function () {
       console.log(corePath, fs.existsSync(corePath));
       listCore.run(function (err, params) {
         expect(err).not.to.be.ok();
@@ -255,7 +271,7 @@ describe('should ok when core dumped to PWD', function () {
     }, 90);
   });
 
-  after(function() {
+  after(function () {
     mm.restore();
   });
 });
