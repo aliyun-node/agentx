@@ -15,7 +15,6 @@ var readConfig = function(confPath) {
   if (!cfg.server ||
     !cfg.appid ||
     !cfg.secret ||
-    !cfg.cmddir ||
     !cfg.logdir ||
     !cfg.heartbeatInterval ||
     !cfg.reconnectDelay ||
@@ -23,7 +22,7 @@ var readConfig = function(confPath) {
     console.log('\n配置文件:');
     console.log(JSON.stringify(cfg, null, 2));
     console.log('请检查配置文件, 确保以下参数配置正确：');
-    console.log('  server, appid, secret, cmddir, logdir, heartbeatInterval, reconnectDelay, reportInterval\n');
+    console.log('  server, appid, secret, logdir, heartbeatInterval, reconnectDelay, reportInterval\n');
     process.send({type: 'suicide'});
     process.exit(1);
   }

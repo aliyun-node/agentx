@@ -1,0 +1,10 @@
+#!/bin/sh
+
+DIR=$(cd "$(dirname "$0")"; pwd)
+GET_NODE_KILL=$DIR/get_node_kill
+NODE_KILL=`$GET_NODE_KILL`
+
+PID=$1
+TIME=${2:-30}s
+
+$NODE_KILL --start_timeline time=$TIME $PID

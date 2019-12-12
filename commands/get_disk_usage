@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if [ $# != 0 ]; then
+  df -P $@
+  exit 0
+fi
+
+IsInContainer=false
+
+CGROUP=/proc/1/cgroup
+SCHED=/proc/1/sched
+DOCKERENV=/.dockerenv
+
+if [ -f "$CGROUP" ]; then
+  if grep /docker/ $CGROUP -qa; then
+    IsInContainer=true
+  elif grep /lxc/ $CGROUP -qa; then
+    IsInContainer=true
+  fi
+elif [ -f "$SCHED" ]; then
+  if cat $SCHED | head -n 1 | grep -vqa "(1,"; then
+    IsInContainer=true
+  fi
+elif [ -f "$DOCKERENV" ]; then
+  IsInContainer=true
+fi
+
+if [ "$IsInContainer" = "true" ]; then
+  df -P /
+else
+  df -P
+fi

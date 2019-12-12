@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ -x "$NODE_KILL" ] && [ -e "$NODE_KILL" ] ; then
+  echo $NODE_KILL;
+elif [ -f "$HOME/.nodepath" ]; then
+  echo `cat $HOME/.nodepath`/node-kill;
+elif which node-kill >/dev/null 2>&1; then
+  echo `which node-kill`;
+else
+  echo "no available node-kill";
+  exit 1;
+fi
+

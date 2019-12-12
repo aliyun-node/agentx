@@ -1,0 +1,12 @@
+#!/bin/sh
+
+export ENABLE_NODE_LOG=NO
+
+DIR=$(cd "$(dirname "$0")"; pwd)
+GET_NODE_EXE=$DIR/get_node_exe
+NODE_EXE=`$GET_NODE_EXE`
+
+SCRIPT=$DIR/get_process_env.js
+
+#get_process_env pid
+$NODE_EXE "$SCRIPT" $1

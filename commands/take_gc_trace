@@ -1,0 +1,7 @@
+#!/bin/sh
+
+DIR=$(cd "$(dirname "$0")"; pwd)
+GET_NODE_KILL=$DIR/get_node_kill
+NODE_KILL=`$GET_NODE_KILL`
+
+$NODE_KILL --v8-options --trace_gc --pid=$1

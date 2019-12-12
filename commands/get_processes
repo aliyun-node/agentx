@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ps -e -o pid,args | grep "$1 " | grep -v get_processes | grep -v grep

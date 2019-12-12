@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -x "$NODE_EXE" ] && [ -e "$NODE_EXE" ] ; then
+  echo $NODE_EXE;
+elif [ -f "$HOME/.nodepath" ]; then
+  echo `cat $HOME/.nodepath`/node;
+elif which node >/dev/null 2>&1; then
+  echo `which node`;
+else
+  echo "no available node";
+  exit 1;
+fi
