@@ -8,3 +8,4 @@ config_*.json
 core.*
 coredump_*
 .nyc_output/
+.vscode

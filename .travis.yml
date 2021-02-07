@@ -4,4 +4,8 @@ node_js:
   - "6"
   - "8"
   - "10"
-script: npm run ci
+script: 
+  - npm run ci
+
+before_install:
+  - ./install_alinode.sh
