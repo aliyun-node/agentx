@@ -1,6 +1,5 @@
 node_modules
 .logs
-package-lock.json
 dump.rdb
 coverage
 *.tar.gz
