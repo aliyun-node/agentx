@@ -25,7 +25,7 @@
   "devDependencies": {
     "co": "^4.6.0",
     "codecov": "^3.0.0",
-    "eslint": "^4.19.1",
+    "eslint": "^8.18.0",
     "expect.js": "^0.3.1",
     "mm": "^3.2.0",
     "mocha": "^10.0.0",
