@@ -16,11 +16,11 @@
   "author": "Jackson Tian",
   "license": "MIT",
   "dependencies": {
-    "ws": "^1.1.5",
-    "nounou": "^1.2.1",
     "debug": "^3.1.0",
+    "nounou": "^1.2.1",
+    "split2": "^2.2.0",
     "through2": "^2.0.3",
-    "split2": "^2.2.0"
+    "ws": "^1.1.5"
   },
   "devDependencies": {
     "co": "^4.6.0",
@@ -29,7 +29,7 @@
     "expect.js": "^0.3.1",
     "mm": "^3.2.0",
     "mocha": "^10.0.0",
-    "nyc": "^11.6.0",
+    "nyc": "^15.1.0",
     "rewire": "^2.5.2"
   },
   "files": [
