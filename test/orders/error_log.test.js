@@ -95,6 +95,21 @@ describe('/lib/orders/error_log.js', function () {
     });
   });
 
+  describe('wildcard match log', function () {
+    before(function () {
+      errorLog.init({
+        error_log: [path.join(__dirname, '../logs', '*.log')]
+      });
+    });
+
+    it('should ok', function (done) {
+      errorLog.run(function (err) {
+        expect(err).to.not.be.ok();
+        done();
+      });
+    });
+  });
+
   describe('when path is folder error logs', function () {
     before(function () {
       errorLog.init({
