@@ -8,7 +8,7 @@ const mm = require('mm');
 describe('/lib/agent -> register signature', function () {
   describe('register signature failed with lib model', function () {
     let wss;
-    let signatureErrorMessage = 'mock signature failed with error';
+    const signatureErrorMessage = 'mock signature failed with error';
     before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
@@ -26,7 +26,7 @@ describe('/lib/agent -> register signature', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           expect(message.type === 'register').to.be.ok();
-          let result = { type: 'error', params: { error: signatureErrorMessage } };
+          const result = { type: 'error', params: { error: signatureErrorMessage } };
           ws.send(JSON.stringify(result));
           ws.close();
         });
@@ -35,7 +35,7 @@ describe('/lib/agent -> register signature', function () {
 
     it('should get signature error', async function () {
       let error;
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
@@ -49,9 +49,10 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
@@ -81,7 +82,7 @@ describe('/lib/agent -> register signature', function () {
 
   describe('register signature failed without lib model', function () {
     let wss;
-    let signatureErrorMessage = 'mock signature failed with error';
+    const signatureErrorMessage = 'mock signature failed with error';
     let processSendData = '';
     let processExitCode = 0;
     before(async function () {
@@ -103,7 +104,7 @@ describe('/lib/agent -> register signature', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           expect(message.type === 'register').to.be.ok();
-          let result = { type: 'error', params: { error: signatureErrorMessage } };
+          const result = { type: 'error', params: { error: signatureErrorMessage } };
           ws.send(JSON.stringify(result));
           ws.close();
         });
@@ -111,7 +112,7 @@ describe('/lib/agent -> register signature', function () {
     });
 
     it('should get signature error',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
@@ -124,9 +125,10 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
@@ -157,7 +159,7 @@ describe('/lib/agent -> register signature', function () {
 
   describe('register signature error', function () {
     let wss;
-    let signatureErrorMessage = 'mock signature failed with error';
+    const signatureErrorMessage = 'mock signature failed with error';
     before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
@@ -175,7 +177,7 @@ describe('/lib/agent -> register signature', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           expect(message.type === 'register').to.be.ok();
-          let result = { type: 'error', params: { error: signatureErrorMessage }, signature: 'test' };
+          const result = { type: 'error', params: { error: signatureErrorMessage }, signature: 'test' };
           ws.send(JSON.stringify(result));
           ws.close();
         });
@@ -183,7 +185,7 @@ describe('/lib/agent -> register signature', function () {
     });
 
     it('should not work',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
@@ -197,9 +199,10 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
@@ -245,8 +248,8 @@ describe('/lib/agent -> register signature', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           expect(message.type === 'register').to.be.ok();
-          let result = { type: 'result', params: { result: 'REG_NOK' } };
-          let signature = utils.sha1(JSON.stringify(result), '2');
+          const result = { type: 'result', params: { result: 'REG_NOK' } };
+          const signature = utils.sha1(JSON.stringify(result), '2');
           result.signature = signature;
           ws.send(JSON.stringify(result));
           ws.close();
@@ -256,7 +259,7 @@ describe('/lib/agent -> register signature', function () {
 
     it('should not work',async function () {
       let error;
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
@@ -270,9 +273,10 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
@@ -322,8 +326,8 @@ describe('/lib/agent -> register signature', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           expect(message.type === 'register').to.be.ok();
-          let result = { type: 'result', params: { 'result': 'REG_NOK' } };
-          let signature = utils.sha1(JSON.stringify(result), '2');
+          const result = { type: 'result', params: { 'result': 'REG_NOK' } };
+          const signature = utils.sha1(JSON.stringify(result), '2');
           result.signature = signature;
           ws.send(JSON.stringify(result));
           ws.close();
@@ -332,7 +336,7 @@ describe('/lib/agent -> register signature', function () {
     });
 
     it('should not work',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
@@ -345,9 +349,10 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
@@ -394,8 +399,8 @@ describe('/lib/agent -> register signature', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           expect(message.type === 'register').to.be.ok();
-          let result = { type: 'result', params: { 'result': 'REG_OK' } };
-          let signature = utils.sha1(JSON.stringify(result), '2');
+          const result = { type: 'result', params: { 'result': 'REG_OK' } };
+          const signature = utils.sha1(JSON.stringify(result), '2');
           result.signature = signature;
           ws.send(JSON.stringify(result));
           ws.close();
@@ -403,7 +408,7 @@ describe('/lib/agent -> register signature', function () {
       });
     });
     it('should work',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
@@ -417,9 +422,10 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);

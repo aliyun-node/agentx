@@ -10,7 +10,7 @@ describe('/lib/agent -> heartbeat', function () {
   describe('heartbeat 3 times success', function () {
     let wss;
     let heartbeatTimes = 0;
-    let heartheatTotalTimes = 3;
+    const heartheatTotalTimes = 3;
     before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
@@ -27,16 +27,16 @@ describe('/lib/agent -> heartbeat', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           if (message.type === 'register') {
-            let result = { type: 'result', params: { 'result': 'REG_OK' } };
-            let signature = utils.sha1(JSON.stringify(result), '2');
+            const result = { type: 'result', params: { 'result': 'REG_OK' } };
+            const signature = utils.sha1(JSON.stringify(result), '2');
             result.signature = signature;
             ws.send(JSON.stringify(result));
             ws.send(JSON.stringify(result));
           }
           if (message.type === 'heartbeat') {
             heartbeatTimes++;
-            let result = { type: 'result', params: { 'result': 'HEARTBEAT_ACK' } };
-            let signature = utils.sha1(JSON.stringify(result), '2');
+            const result = { type: 'result', params: { 'result': 'HEARTBEAT_ACK' } };
+            const signature = utils.sha1(JSON.stringify(result), '2');
             result.signature = signature;
             ws.send(JSON.stringify(result));
             if (heartbeatTimes === heartheatTotalTimes) {
@@ -48,7 +48,7 @@ describe('/lib/agent -> heartbeat', function () {
     });
 
     it('should work',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8993',
         appid: 1,
         secret: '2',
@@ -62,9 +62,10 @@ describe('/lib/agent -> heartbeat', function () {
       });
       agent.heartbeatInterval = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);

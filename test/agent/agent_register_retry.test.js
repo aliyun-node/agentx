@@ -7,7 +7,7 @@ const utils = require('../../lib/utils');
 const mm = require('mm');
 
 describe('/lib/agent -> register retry', function () {
-  let registryRetryTimes = 3;
+  const registryRetryTimes = 3;
   describe(`register should retry ${registryRetryTimes} times`, function () {
     let wss;
     let connecTimes = 0;
@@ -30,8 +30,8 @@ describe('/lib/agent -> register retry', function () {
           expect(message.type === 'register').to.be.ok();
           connecTimes++;
           if (connecTimes === registryRetryTimes) {
-            let result = { type: 'result', params: { result: 'REG_OK' } };
-            let signature = utils.sha1(JSON.stringify(result), '2');
+            const result = { type: 'result', params: { result: 'REG_OK' } };
+            const signature = utils.sha1(JSON.stringify(result), '2');
             result.signature = signature;
             ws.send(JSON.stringify(result));
             ws.close();
@@ -41,7 +41,7 @@ describe('/lib/agent -> register retry', function () {
     });
 
     it('should retry',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8991',
         appid: 1,
         secret: '2',
@@ -54,9 +54,10 @@ describe('/lib/agent -> register retry', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1500);
@@ -111,7 +112,7 @@ describe('/lib/agent -> register retry', function () {
       });
     });
     it('should clear',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8991',
         appid: 1,
         secret: '2',
@@ -124,9 +125,10 @@ describe('/lib/agent -> register retry', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1500);

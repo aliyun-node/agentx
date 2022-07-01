@@ -39,19 +39,19 @@ describe('/lib/agent -> heartbeat', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           if (message.type === 'register') {
-            let result = { type: 'result', params: { 'result': 'REG_OK' } };
-            let signature = utils.sha1(JSON.stringify(result), '2');
+            const result = { type: 'result', params: { 'result': 'REG_OK' } };
+            const signature = utils.sha1(JSON.stringify(result), '2');
             result.signature = signature;
             ws.send(JSON.stringify(result));
             setTimeout(() => {
-              let result = { type: 'command', params: { 'command': 'mock-error' } };
-              let signature = utils.sha1(JSON.stringify(result), '2');
+              const result = { type: 'command', params: { 'command': 'mock-error' } };
+              const signature = utils.sha1(JSON.stringify(result), '2');
               result.signature = signature;
               ws.send(JSON.stringify(result));
             }, 100);
             setTimeout(() => {
-              let result = { type: 'command', params: { 'command': 'mock-success' } };
-              let signature = utils.sha1(JSON.stringify(result), '2');
+              const result = { type: 'command', params: { 'command': 'mock-success' } };
+              const signature = utils.sha1(JSON.stringify(result), '2');
               result.signature = signature;
               ws.send(JSON.stringify(result));
               ws.close();
@@ -62,7 +62,7 @@ describe('/lib/agent -> heartbeat', function () {
     });
 
     it('should work',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8994',
         appid: 1,
         secret: '2',
@@ -76,9 +76,10 @@ describe('/lib/agent -> heartbeat', function () {
         }
       });
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
