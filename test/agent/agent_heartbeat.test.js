@@ -1,22 +1,22 @@
 'use strict';
+
 const expect = require('expect.js');
 const WebSocketServer = require('ws').Server;
 const Agent = require('../../lib/agent');
 const utils = require('../../lib/utils');
 const mm = require('mm');
-const co = require('co');
 
 describe('/lib/agent -> heartbeat', function () {
   describe('heartbeat 3 times success', function () {
     let wss;
     let heartbeatTimes = 0;
     let heartheatTotalTimes = 3;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8993 }, function () {
           resolve();
         });
@@ -45,8 +45,9 @@ describe('/lib/agent -> heartbeat', function () {
           }
         });
       });
-    }));
-    it('should work', co.wrap(function* () {
+    });
+
+    it('should work',async function () {
       let agent = new Agent({
         server: 'localhost:8993',
         appid: 1,
@@ -61,7 +62,7 @@ describe('/lib/agent -> heartbeat', function () {
       });
       agent.heartbeatInterval = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -77,7 +78,8 @@ describe('/lib/agent -> heartbeat', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();

@@ -4,7 +4,6 @@ const WebSocketServer = require('ws').Server;
 const Agent = require('../../lib/agent');
 const utils = require('../../lib/utils');
 const mm = require('mm');
-const co = require('co');
 const port = 8995;
 
 let wssServerCount = 0;
@@ -49,10 +48,10 @@ function handleConnection(wss) {
         wss.close();
         wssServerCount--;
         if (message.params && message.params.restart) {
-          setTimeout(co.wrap(function* () {
-            let wss = yield createWss(port);
+          setTimeout(async function () {
+            let wss = await createWss(port);
             handleConnection(wss);
-          }), 500);
+          }, 500);
         }
       }
     });
@@ -119,19 +118,20 @@ describe('/lib/agent -> reconnect', function () {
   let agent;
   describe('reconnect when server close', function () {
     let wss;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       // create ws server
-      wss = yield createWss(port);
+      wss = await createWss(port);
       handleConnection(wss);
-    }));
-    it('should work', co.wrap(function* () {
+    });
+
+    it('should work',async function () {
       // create agent
       agent = createAgent();
       agent.run();
       // 1. first connect success
-      let result1 = yield connectedSucces(agent);
+      let result1 = await connectedSucces(agent);
       expect(wssServerCount).to.be(1);
       expect(result1).to.be('ok');
       expect(agent.connectSockets).to.be(1);
@@ -139,7 +139,7 @@ describe('/lib/agent -> reconnect', function () {
       // 2. close server and after 500ms restart it
       agent.sendMessage({ type: 'shutdown', params: { restart: true } });
       // will reconnect success
-      let result2 = yield connectedSucces(agent, 1500);
+      let result2 = await connectedSucces(agent, 1500);
       expect(wssServerCount).to.be(1);
       expect(result2).to.be('ok');
       expect(agent.connectSockets).to.be(1);
@@ -147,18 +147,18 @@ describe('/lib/agent -> reconnect', function () {
       // 3. reconnect when heartbeat lost
       heartbeatNotReturn = true;
       agent.sendMessage({ type: 'shutdown', params: { restart: true } });
-      let heartbeatMiss3Times = yield heartbeatMiss(3, 1500);
+      let heartbeatMiss3Times = await heartbeatMiss(3, 1500);
       expect(heartbeatMiss3Times).to.be('ok');
       // miss 3 times heartbeat and also connected success
-      let result3 = yield connectedSucces(agent, 1500);
+      let result3 = await connectedSucces(agent, 1500);
       expect(wssServerCount).to.be(1);
       expect(result3).to.be('ok');
       expect(agent.connectSockets).to.be(1);
       // clear source
       heartbeatNotReturn = false;
       heartbeatMissTimes = 0;
+    });
 
-    }));
     after(function () {
       try {
         agent && agent.sendMessage({ type: 'shutdown' });

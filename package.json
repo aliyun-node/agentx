@@ -23,7 +23,6 @@
     "ws": "^1.1.5"
   },
   "devDependencies": {
-    "co": "^4.6.0",
     "codecov": "^3.0.0",
     "eslint": "^8.18.0",
     "expect.js": "^0.3.1",

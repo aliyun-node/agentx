@@ -1,23 +1,23 @@
 'use strict';
+
 const expect = require('expect.js');
 const WebSocketServer = require('ws').Server;
 const Agent = require('../../lib/agent');
 const utils = require('../../lib/utils');
 const mm = require('mm');
-const co = require('co');
 
 describe('/lib/agent -> register retry', function () {
   let registryRetryTimes = 3;
   describe(`register should retry ${registryRetryTimes} times`, function () {
     let wss;
     let connecTimes = 0;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8991 }, function () {
           resolve();
         });
@@ -38,8 +38,9 @@ describe('/lib/agent -> register retry', function () {
           }
         });
       });
-    }));
-    it('should retry', co.wrap(function* () {
+    });
+
+    it('should retry',async function () {
       let agent = new Agent({
         server: 'localhost:8991',
         appid: 1,
@@ -53,7 +54,7 @@ describe('/lib/agent -> register retry', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -70,7 +71,8 @@ describe('/lib/agent -> register retry', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
@@ -84,13 +86,13 @@ describe('/lib/agent -> register retry', function () {
   describe('clear timer when teardown', function () {
     let wss;
     let connecTimes = 0;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8991 }, function () {
           resolve();
         });
@@ -107,8 +109,8 @@ describe('/lib/agent -> register retry', function () {
           }
         });
       });
-    }));
-    it('should clear', co.wrap(function* () {
+    });
+    it('should clear',async function () {
       let agent = new Agent({
         server: 'localhost:8991',
         appid: 1,
@@ -122,7 +124,7 @@ describe('/lib/agent -> register retry', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -139,7 +141,8 @@ describe('/lib/agent -> register retry', function () {
         }, 100);
       });
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();

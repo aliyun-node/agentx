@@ -4,19 +4,18 @@ const WebSocketServer = require('ws').Server;
 const Agent = require('../../lib/agent');
 const utils = require('../../lib/utils');
 const mm = require('mm');
-const co = require('co');
 
 describe('/lib/agent -> register signature', function () {
   describe('register signature failed with lib model', function () {
     let wss;
     let signatureErrorMessage = 'mock signature failed with error';
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8992 }, function () {
           resolve();
         });
@@ -32,8 +31,9 @@ describe('/lib/agent -> register signature', function () {
           ws.close();
         });
       });
-    }));
-    it('should get signature error', co.wrap(function* () {
+    });
+
+    it('should get signature error', async function () {
       let error;
       let agent = new Agent({
         server: 'localhost:8992',
@@ -49,7 +49,7 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -67,7 +67,8 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
@@ -83,7 +84,7 @@ describe('/lib/agent -> register signature', function () {
     let signatureErrorMessage = 'mock signature failed with error';
     let processSendData = '';
     let processExitCode = 0;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
@@ -91,7 +92,7 @@ describe('/lib/agent -> register signature', function () {
       mm(process, 'send', function (data) { processSendData = data; });
       mm(process, 'exit', function (code) { processExitCode = code; });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8992 }, function () {
           resolve();
         });
@@ -107,8 +108,9 @@ describe('/lib/agent -> register signature', function () {
           ws.close();
         });
       });
-    }));
-    it('should get signature error', co.wrap(function* () {
+    });
+
+    it('should get signature error',async function () {
       let agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
@@ -122,7 +124,7 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -141,7 +143,8 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
@@ -155,13 +158,13 @@ describe('/lib/agent -> register signature', function () {
   describe('register signature error', function () {
     let wss;
     let signatureErrorMessage = 'mock signature failed with error';
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8992 }, function () {
           resolve();
         });
@@ -177,8 +180,9 @@ describe('/lib/agent -> register signature', function () {
           ws.close();
         });
       });
-    }));
-    it('should not work', co.wrap(function* () {
+    });
+
+    it('should not work',async function () {
       let agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
@@ -193,7 +197,7 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -210,7 +214,8 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
@@ -223,13 +228,13 @@ describe('/lib/agent -> register signature', function () {
 
   describe('register signature success and reg not ok with lib model', function () {
     let wss;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8992 }, function () {
           resolve();
         });
@@ -247,8 +252,9 @@ describe('/lib/agent -> register signature', function () {
           ws.close();
         });
       });
-    }));
-    it('should not work', co.wrap(function* () {
+    });
+
+    it('should not work',async function () {
       let error;
       let agent = new Agent({
         server: 'localhost:8992',
@@ -264,7 +270,7 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -281,7 +287,8 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
@@ -296,7 +303,7 @@ describe('/lib/agent -> register signature', function () {
     let wss;
     let processSendData = '';
     let processExitCode = 0;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
@@ -304,7 +311,7 @@ describe('/lib/agent -> register signature', function () {
       mm(process, 'send', function (data) { processSendData = data; });
       mm(process, 'exit', function (code) { processExitCode = code; });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8992 }, function () {
           resolve();
         });
@@ -322,8 +329,9 @@ describe('/lib/agent -> register signature', function () {
           ws.close();
         });
       });
-    }));
-    it('should not work', co.wrap(function* () {
+    });
+
+    it('should not work',async function () {
       let agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
@@ -337,7 +345,7 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -355,7 +363,8 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
@@ -368,13 +377,13 @@ describe('/lib/agent -> register signature', function () {
 
   describe('register signature success and reg ok', function () {
     let wss;
-    before(co.wrap(function* () {
+    before(async function () {
       // mock some unused function
       mm(Agent.prototype, 'handleMonitor', function () { });
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       // create ws server
-      yield new Promise(resolve => {
+      await new Promise(resolve => {
         wss = new WebSocketServer({ port: 8992 }, function () {
           resolve();
         });
@@ -392,8 +401,8 @@ describe('/lib/agent -> register signature', function () {
           ws.close();
         });
       });
-    }));
-    it('should work', co.wrap(function* () {
+    });
+    it('should work',async function () {
       let agent = new Agent({
         server: 'localhost:8992',
         appid: 1,
@@ -408,7 +417,7 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.registerRetryDelay = 200;
       agent.run();
-      let result = yield new Promise((resolve, reject) => {
+      let result = await new Promise((resolve, reject) => {
         let timer, interval;
         timer = setTimeout(() => {
           interval && clearInterval(interval);
@@ -425,7 +434,8 @@ describe('/lib/agent -> register signature', function () {
       });
       agent.teardown();
       expect(result).to.be('ok');
-    }));
+    });
+
     after(function () {
       try {
         mm.restore();
