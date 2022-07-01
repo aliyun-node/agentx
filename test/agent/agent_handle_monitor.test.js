@@ -18,7 +18,7 @@ describe('/lib/agent -> handle monitor', function () {
       mm(Agent.prototype, 'startHeartbeat', function () { });
       mm(Agent.prototype, 'reconnect', function () { });
       orders.forEach((name, index) => {
-        let order = require(path.join(__dirname, '../../lib/orders', name));
+        const order = require(path.join(__dirname, '../../lib/orders', name));
         mm(order, 'init', function () { });
         mm(order, 'reportInterval', 50);
         mm(order, 'run', function (cb) {
@@ -50,8 +50,8 @@ describe('/lib/agent -> handle monitor', function () {
           message = JSON.parse(message);
           expect(typeof message === 'object').to.be.ok();
           if (message.type === 'register') {
-            let result = { type: 'result', params: { 'result': 'REG_OK' } };
-            let signature = utils.sha1(JSON.stringify(result), '2');
+            const result = { type: 'result', params: { 'result': 'REG_OK' } };
+            const signature = utils.sha1(JSON.stringify(result), '2');
             result.signature = signature;
             ws.send(JSON.stringify(result));
           }
@@ -60,7 +60,7 @@ describe('/lib/agent -> handle monitor', function () {
     });
 
     it('should work',async function () {
-      let agent = new Agent({
+      const agent = new Agent({
         server: 'localhost:8994',
         appid: 1,
         secret: '2',
@@ -75,9 +75,10 @@ describe('/lib/agent -> handle monitor', function () {
         }
       });
       agent.run();
-      let result = await new Promise((resolve, reject) => {
-        let timer, interval;
-        timer = setTimeout(() => {
+      const result = await new Promise((resolve, reject) => {
+        // eslint-disable-next-line prefer-const
+        let interval;
+        const timer = setTimeout(() => {
           interval && clearInterval(interval);
           resolve('failed');
         }, 1000);
