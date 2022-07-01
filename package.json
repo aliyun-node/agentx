@@ -18,7 +18,7 @@
   "dependencies": {
     "debug": "^4.3.4",
     "nounou": "^1.2.1",
-    "split2": "^2.2.0",
+    "split2": "^4.1.0",
     "through2": "^4.0.2",
     "ws": "^1.1.5"
   },
