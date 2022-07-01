@@ -16,7 +16,7 @@
   "author": "Jackson Tian",
   "license": "MIT",
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.3.4",
     "nounou": "^1.2.1",
     "split2": "^2.2.0",
     "through2": "^4.0.2",
