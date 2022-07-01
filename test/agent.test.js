@@ -6,7 +6,6 @@ var WebSocketServer = require('ws').Server;
 var Agent = require('../lib/agent');
 var utils = require('../lib/utils');
 var mm = require('mm');
-var co = require('co');
 
 describe('/lib/agent', function () {
   it('new Agent should ok', function () {
@@ -77,11 +76,11 @@ describe('/lib/agent', function () {
   });
 
   var wss;
-  before(co.wrap(function* () {
+  before(async function () {
     mm(Agent.prototype, 'handleMonitor', function () { });
     mm(Agent.prototype, 'startHeartbeat', function () { });
     mm(Agent.prototype, 'reconnect', function () { });
-    yield new Promise(resolve => {
+    await new Promise(resolve => {
       wss = new WebSocketServer({ port: 8990 }, function () {
         resolve();
       });
@@ -104,7 +103,7 @@ describe('/lib/agent', function () {
         }
       });
     });
-  }));
+  });
 
   after(function () {
     try {
@@ -115,7 +114,7 @@ describe('/lib/agent', function () {
     }
   });
 
-  it('run should ok', co.wrap(function* () {
+  it('run should ok',async function () {
     var agent = new Agent({
       server: 'localhost:8990',
       appid: 1,
@@ -125,7 +124,7 @@ describe('/lib/agent', function () {
     });
 
     agent.run();
-    var result = yield new Promise((resolve, reject) => {
+    var result = await new Promise((resolve, reject) => {
       var interval;
       var timer;
       timer = setTimeout(() => {
@@ -143,9 +142,9 @@ describe('/lib/agent', function () {
     agent.teardown();
     agent.notReconnect = true;
     expect(result).to.be('ok');
-  }));
+  });
 
-  it('should not exit when run with libMode', co.wrap(function* () {
+  it('should not exit when run with libMode',async function () {
     var agent = new Agent({
       libMode: true,
       server: 'localhost:8990',
@@ -156,7 +155,7 @@ describe('/lib/agent', function () {
     });
 
     agent.run();
-    var result = yield new Promise((resolve, reject) => {
+    var result = await new Promise((resolve, reject) => {
       var interval;
       var timer;
       timer = setTimeout(() => {
@@ -204,5 +203,5 @@ describe('/lib/agent', function () {
     agent.sendMessage({type: 'close'});
     agent.notReconnect = true;
     agent.teardown();
-  }));
+  });
 });
