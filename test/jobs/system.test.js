@@ -1,7 +1,8 @@
 'use strict';
 const path = require('path');
+
 const expect = require('expect.js');
-const system = require('../../lib/orders/system');
+const SystemJob = require('../../lib/jobs/system');
 const mm = require('mm');
 
 
@@ -85,8 +86,20 @@ const mock_mem = [
 
 const mock_load = '0.51 0.36 0.50 2/1253 58';
 
+async function mockLinux(f) {
+  if (f === '/proc/stat') {
+    return mock_cpu;
+  }
+  if (f === '/proc/loadavg') {
+    return mock_load;
+  }
+  if (f === '/proc/meminfo') {
+    return mock_mem;
+  }
+  return '';
+}
 
-describe('/lib/orders/system', function () {
+describe('/lib/jobs/system', function () {
 
   describe('mock docker cgroup', function () {
     const mock = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
@@ -105,16 +118,17 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('fs'), 'readFileSync', mock);
     });
 
-    it('should ok', function() {
-      system.init();
-      expect(system.isDocker).equal(true);
-    });
-
     after(function() {
       mm.restore();
     });
-  });
 
+    it('should ok', async function() {
+      const job = new SystemJob();
+      const result = await job.run();
+      console.log(result);
+      // expect(job.isDocker).equal(true);
+    });
+  });
 
   describe('mock docker isDocker true', function () {
     const mock = [ '12:pids:/init.scope',
@@ -135,14 +149,13 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init({isDocker: true});
-      expect(system.isDocker).equal(true);
-      done();
-    });
-
     after(function() {
       mm.restore();
+    });
+
+    it('should ok', function() {
+      const job = new SystemJob({isDocker: true});
+      expect(job.isDocker).equal(true);
     });
   });
 
@@ -165,48 +178,15 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('fs'), 'existsSync', false);
     });
 
-    it('should ok', function(done) {
-      system.init({isDocker: true});
-      expect(system.isDocker).equal(true);
-      done();
-    });
-
     after(function() {
       mm.restore();
     });
-  });
 
-  describe('mock docker no cgroup no dockerenv isDocker string', function () {
-    const mock = [ '12:pids:/init.scope',
-      '11:hugetlb:/',
-      '10:freezer:/',
-      '9:devices:/init.scope',
-      '8:perf_event:/',
-      '7:net_cls,net_prio:/',
-      '6:memory:/init.scope',
-      '5:rdma:/',
-      '4:blkio:/init.scope',
-      '3:cpu,cpuacct:/init.scope',
-      '2:cpuset:/',
-      '1:name=systemd:/init.scope'].join('\n');
-
-    before(function() {
-      mm.syncData(require('fs'), 'readFileSync', mock);
-      mm.syncData(require('fs'), 'existsSync', false);
-    });
-
-    it('should ok', function(done) {
-      system.init({isDocker: 'exists'});
-      expect(system.isDocker).equal(true);
-      done();
-    });
-
-    after(function() {
-      mm.restore();
+    it('should ok', function() {
+      const job = new SystemJob({isDocker: true});
+      expect(job.isDocker).equal(true);
     });
   });
-
-
 
   describe('mock docker isDocker false', function () {
     const mock = [ '12:pids:/init.scope',
@@ -227,17 +207,15 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init({isDocker: false});
-      expect(system.isDocker).equal(false);
-      done();
-    });
-
     after(function() {
       mm.restore();
     });
-  });
 
+    it('should ok', function() {
+      const job = new SystemJob({isDocker: false});
+      expect(job.isDocker).equal(false);
+    });
+  });
 
   describe('mock docker dockerenv', function () {
     const mock = [ '12:pids:/init.scope',
@@ -254,18 +232,18 @@ describe('/lib/orders/system', function () {
       '1:name=systemd:/init.scope'].join('\n');
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      done();
-    });
-
     after(function() {
       mm.restore();
+    });
+
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
     });
   });
 
@@ -284,35 +262,35 @@ describe('/lib/orders/system', function () {
       '1:name=systemd:/init.scope'].join('\n');
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', false);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(false);
-      done();
-    });
-
     after(function() {
       mm.restore();
+    });
+
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(false);
     });
   });
 
   describe('mock docker error', function () {
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('fs'), 'readFileSync', 8888);
       mm.syncData(require('fs'), 'existsSync', false);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(false);
-      done();
-    });
-
     after(function() {
       mm.restore();
+    });
+
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(false);
     });
   });
 
@@ -353,21 +331,20 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('fs'), 'readFileSync', mock_readfile);
       mm(require('fs'), 'existsSync', mock);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      done();
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
     });
 
     after(function() {
       mm.restore();
     });
   });
-
 
   describe('mock docker error no quota', function () {
     const mock_readfile = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
@@ -406,14 +383,14 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('fs'), 'readFileSync', mock_readfile);
       mm(require('fs'), 'existsSync', mock);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      done();
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
     });
 
     after(function() {
@@ -440,15 +417,15 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(0.5);
-      done();
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(0.5);
     });
 
     after(function() {
@@ -475,18 +452,17 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(1.5);
-      system.run(function(err, params) {
-        done();
-      });
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(1.5);
     });
+
 
     after(function() {
       mm.restore();
@@ -512,16 +488,16 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('os'), 'cpus', ['cpu0', 'cpu1', 'cpu2', 'cpu3']);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(3);
-      done();
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(3);
     });
 
     after(function() {
@@ -548,23 +524,22 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
       mm.syncData(require('os'), 'cpus', ['cpu0', 'cpu1', 'cpu2', 'cpu3']);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(3);
-      done();
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(3);
     });
 
     after(function() {
       mm.restore();
     });
   });
-
 
   describe('mock docker cpus period -1', function () {
     const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
@@ -585,23 +560,22 @@ describe('/lib/orders/system', function () {
     };
 
     before(function() {
+      mm.syncData(require('os'), 'type', 'Linux');
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
       mm.syncData(require('os'), 'cpus', ['cpu0', 'cpu1', 'cpu2', 'cpu3']);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(3);
-      done();
+    it('should ok', function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(3);
     });
 
     after(function() {
       mm.restore();
     });
   });
-
 
   describe('mock docker memory 0.5', function () {
     const cgroupBaseDir = '/sys/fs/cgroup';
@@ -612,7 +586,6 @@ describe('/lib/orders/system', function () {
     const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
-
 
     const mock = function(x) {
       if (x === quota_path) {
@@ -633,39 +606,46 @@ describe('/lib/orders/system', function () {
       return '::';
     };
 
-    const mockmem = function(f, options,cb) {
+    const mockmem = async function(f, options) {
       if (f === '/proc/stat') {
-        return cb(null, mock_cpu);
+        return mock_cpu;
       }
+
       if (f === '/proc/loadavg') {
-        return cb(null, mock_load);
-      } if (f === '/proc/meminfo') {
-        return cb(null, mock_mem);
+        return mock_load;
+      }
+
+      if (f === '/proc/meminfo') {
+        return mock_mem;
       }
 
       if (f === mem_used_path) {
-        return cb(null, (1024 * 1024 * 48).toString());
+        return (1024 * 1024 * 48).toString();
       }
-      return cb(null, '');
+
+      return '';
     };
 
+    async function mockdir() {
+      return [];
+    }
 
     before(function() {
-      mm(require('fs'), 'readFile', mockmem);
+      mm.syncData(require('os'), 'type', 'Linux');
+      mm(require('fs').promises, 'readFile', mockmem);
+      mm(require('fs').promises, 'readdir', mockdir);
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(1.5);
-      system.run(function(err, params) {
-        expect(params.metrics.totalmem).equal(1024 * 1024 * 96);
-        expect(params.metrics.freemem).equal(1024 * 1024 * (96 - 48));
-        expect(params.metrics.freemem / params.metrics.totalmem).equal(0.5);
-        done();
-      });
+    it('should ok', async function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(1.5);
+      const params = await job.run();
+      expect(params.metrics.totalmem).equal(1024 * 1024 * 96);
+      expect(params.metrics.freemem).equal(1024 * 1024 * (96 - 48));
+      expect(params.metrics.freemem / params.metrics.totalmem).equal(0.5);
     });
 
     after(function() {
@@ -683,7 +663,6 @@ describe('/lib/orders/system', function () {
     const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
-
 
     const mock = function(x) {
       if (x === quota_path) {
@@ -704,39 +683,46 @@ describe('/lib/orders/system', function () {
       return '::';
     };
 
-    const mockmem = function(f, options,cb) {
+    const mockmem = async function(f) {
       if (f === '/proc/stat') {
-        return cb(null, mock_cpu);
+        return mock_cpu;
       }
+
       if (f === '/proc/loadavg') {
-        return cb(null, mock_load);
-      } if (f === '/proc/meminfo') {
-        return cb(null, mock_mem);
+        return mock_load;
+      }
+
+      if (f === '/proc/meminfo') {
+        return mock_mem;
       }
 
       if (f === mem_used_path) {
-        return cb(null, (1024 * 1024 * 48).toString());
+        return (1024 * 1024 * 48).toString();
       }
-      return cb(null, '');
+
+      return '';
     };
 
+    async function mockdir() {
+      return [];
+    }
 
     before(function() {
-      mm(require('fs'), 'readFile', mockmem);
+      mm.syncData(require('os'), 'type', 'Linux');
+      mm(require('fs').promises, 'readFile', mockmem);
+      mm(require('fs').promises, 'readdir', mockdir);
       mm(require('fs'), 'readFileSync', mock);
       mm.syncData(require('fs'), 'existsSync', true);
     });
 
-    it('should ok', function(done) {
-      system.init();
-      expect(system.isDocker).equal(true);
-      expect(system.cpuNumber).equal(1.5);
-      system.run(function(err, params) {
-        expect(params.metrics.totalmem).equal(1024 * 1024 * 100);
-        expect(params.metrics.freemem).equal(1024 * 1024 * (100 - 48));
-        expect(params.metrics.freemem / params.metrics.totalmem).equal(0.52);
-        done();
-      });
+    it('should ok', async function() {
+      const job = new SystemJob();
+      expect(job.isDocker).equal(true);
+      expect(job.cpuNumber).equal(1.5);
+      const params = await job.run();
+      expect(params.metrics.totalmem).equal(1024 * 1024 * 100);
+      expect(params.metrics.freemem).equal(1024 * 1024 * (100 - 48));
+      expect(params.metrics.freemem / params.metrics.totalmem).equal(0.52);
     });
 
     after(function() {
@@ -744,211 +730,206 @@ describe('/lib/orders/system', function () {
     });
   });
 
-
   describe('linux memory cpu load', function () {
-    const mock = function(f, options,cb) {
-      if (f === '/proc/stat') {
-        return cb(null, mock_cpu);
-      }
-      if (f === '/proc/loadavg') {
-        return cb(null, mock_load);
-      } if (f === '/proc/meminfo') {
-        return cb(null, mock_mem);
-      }
-      return '';
-    };
-
     before(function () {
-      mm(require('fs'), 'readFile', mock);
+      mm(require('fs').promises, 'readFile', mockLinux);
       mm.syncData(require('fs'), 'readFileSync', '');
       mm.syncData(require('fs'), 'existsSync', false);
       // type linux
       mm.syncData(require('os'), 'type', 'Linux');
+      // release 3.14
+      mm.syncData(require('os'), 'release', '3.14');
       mm.syncData(require('os'), 'totalmem', 8041357312);
     });
 
-    it('should ok', function (done) {
-      system.init();
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('uptime');
-        expect(metrics).to.have.key('cpu_count');
-        expect(metrics['load1']).equal(0.51);
-        expect(metrics['load5']).equal(0.36);
-        expect(metrics['load15']).equal(0.5);
-        expect(metrics['totalmem']).equal(8041357312);
-        expect(metrics['freemem']).equal(1922719744);
-        expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('uptime');
+      expect(metrics).to.have.key('cpu_count');
+      expect(metrics['load1']).equal(0.51);
+      expect(metrics['load5']).equal(0.36);
+      expect(metrics['load15']).equal(0.5);
+      expect(metrics['totalmem']).equal(8041357312);
+      expect(metrics['freemem']).equal(1922719744);
+      expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
     });
+
     after(function() {
       mm.restore();
     });
   });
 
   describe('linux memory cpu load 1', function () {
-    const mock = function(f, options,cb) {
+    const mock = async function(f) {
       if (f === '/proc/stat') {
-        return cb(null, mock_cpu_1);
+        return mock_cpu_1;
       }
+
       if (f === '/proc/loadavg') {
-        return cb(null, mock_load);
-      } if (f === '/proc/meminfo') {
-        return cb(null, mock_mem);
+        return mock_load;
+      }
+      if (f === '/proc/meminfo') {
+        return mock_mem;
       }
       return '';
     };
-
     before(function () {
-      mm(require('fs'), 'readFile', mock);
+      mm(require('fs').promises, 'readFile', mock);
       mm.syncData(require('fs'), 'readFileSync', '');
       mm.syncData(require('fs'), 'existsSync', false);
       // type linux
       mm.syncData(require('os'), 'type', 'Linux');
+      // release 3.14
+      mm.syncData(require('os'), 'release', '3.14');
       mm.syncData(require('os'), 'totalmem', 8041357312);
     });
 
-    it('should ok', function (done) {
-      system.init();
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('uptime');
-        expect(metrics).to.have.key('cpu_count');
-        expect(metrics['load1']).equal(0.51);
-        expect(metrics['load5']).equal(0.36);
-        expect(metrics['load15']).equal(0.5);
-        expect(metrics['totalmem']).equal(8041357312);
-        expect(metrics['freemem']).equal(1922719744);
-        expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('uptime');
+      expect(metrics).to.have.key('cpu_count');
+      expect(metrics['load1']).equal(0.51);
+      expect(metrics['load5']).equal(0.36);
+      expect(metrics['load15']).equal(0.5);
+      expect(metrics['totalmem']).equal(8041357312);
+      expect(metrics['freemem']).equal(1922719744);
+      expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
     });
+
     after(function() {
       mm.restore();
     });
   });
 
   describe('linux memory cpu load 2', function () {
-    const mock = function(f, options,cb) {
+    const mock = async function(f) {
       if (f === '/proc/stat') {
-        return cb(null, mock_cpu_2);
+        return mock_cpu_2;
       }
       if (f === '/proc/loadavg') {
-        return cb(null, mock_load);
+        return mock_load;
       } if (f === '/proc/meminfo') {
-        return cb(null, mock_mem);
+        return mock_mem;
       }
       return '';
     };
 
     before(function () {
-      mm(require('fs'), 'readFile', mock);
+      mm(require('fs').promises, 'readFile', mock);
       mm.syncData(require('fs'), 'readFileSync', '');
       mm.syncData(require('fs'), 'existsSync', false);
       // type linux
       mm.syncData(require('os'), 'type', 'Linux');
+      // release 3.14
+      mm.syncData(require('os'), 'release', '3.14');
       mm.syncData(require('os'), 'totalmem', 8041357312);
     });
 
-    it('should ok', function (done) {
-      system.init();
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('uptime');
-        expect(metrics).to.have.key('cpu_count');
-        expect(metrics['load1']).equal(0.51);
-        expect(metrics['load5']).equal(0.36);
-        expect(metrics['load15']).equal(0.5);
-        expect(metrics['totalmem']).equal(8041357312);
-        expect(metrics['freemem']).equal(1922719744);
-        expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('uptime');
+      expect(metrics).to.have.key('cpu_count');
+      expect(metrics['load1']).equal(0.51);
+      expect(metrics['load5']).equal(0.36);
+      expect(metrics['load15']).equal(0.5);
+      expect(metrics['totalmem']).equal(8041357312);
+      expect(metrics['freemem']).equal(1922719744);
+      expect(metrics['cpu']).equal(1 - 15160404 / 21835093);
     });
+
     after(function() {
       mm.restore();
     });
   });
-
 
   describe('linux memory cpu load 3', function () {
-    const mock = function(f, options,cb) {
+    const mock = async function(f, options) {
       if (f === '/proc/stat') {
-        return cb(null, mock_cpu_3);
+        return mock_cpu_3;
       }
       if (f === '/proc/loadavg') {
-        return cb(null, mock_load);
+        return mock_load;
       } if (f === '/proc/meminfo') {
-        return cb(null, mock_mem);
+        return mock_mem;
       }
       return '';
     };
 
     before(function () {
-      mm(require('fs'), 'readFile', mock);
+      mm(require('fs').promises, 'readFile', mock);
       mm.syncData(require('fs'), 'readFileSync', '');
       mm.syncData(require('fs'), 'existsSync', false);
       // type linux
       mm.syncData(require('os'), 'type', 'Linux');
+      // release 3.14
+      mm.syncData(require('os'), 'release', '3.14');
       mm.syncData(require('os'), 'totalmem', 8041357312);
     });
 
-    it('should ok', function (done) {
-      system.init();
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('uptime');
-        expect(metrics).to.have.key('cpu_count');
-        expect(metrics['load1']).equal(0.51);
-        expect(metrics['load5']).equal(0.36);
-        expect(metrics['load15']).equal(0.5);
-        expect(metrics['totalmem']).equal(8041357312);
-        expect(metrics['freemem']).equal(1922719744);
-        expect(metrics['cpu']).equal(0);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('uptime');
+      expect(metrics).to.have.key('cpu_count');
+      expect(metrics['load1']).equal(0.51);
+      expect(metrics['load5']).equal(0.36);
+      expect(metrics['load15']).equal(0.5);
+      expect(metrics['totalmem']).equal(8041357312);
+      expect(metrics['freemem']).equal(1922719744);
+      expect(metrics['cpu']).equal(0);
     });
+
     after(function() {
       mm.restore();
     });
   });
 
-
-  describe('mock linux loadavg nok', function () {
+  describe('mock linux loadavg ok', function () {
     const mock = '110.51 aa 0.50 2/1253 58';
 
     before(function () {
-      mm.data(require('fs'), 'readFile', mock);
+      mm.data(require('fs').promises, 'readFile', mock);
       mm.syncData(require('os'), 'type', 'Linux');
     });
 
-    it('should ok', function (done) {
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('uptime');
-        expect(metrics).to.have.key('load1');
-        expect(metrics).to.have.key('load5');
-        expect(metrics).to.have.key('load15');
-        expect(metrics).to.have.key('cpu');
-        expect(metrics).to.have.key('cpu_count');
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('uptime');
+      expect(metrics).to.have.key('load1');
+      expect(metrics).to.have.key('load5');
+      expect(metrics).to.have.key('load15');
+      expect(metrics).to.have.key('cpu');
+      expect(metrics).to.have.key('cpu_count');
     });
 
     after(function() {
@@ -975,21 +956,21 @@ describe('/lib/orders/system', function () {
       'DirectMap1G:     1048576 kB'].join('\n');
 
     before(function () {
-      mm.data(require('fs'), 'readFile', mock);
+      mm.data(require('fs').promises, 'readFile', mock);
       mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('os'), 'release', '4.13.0-32-generic');
     });
 
-    it('should ok', function (done) {
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('freemem');
-        expect(metrics.freemem).equal(1922719744);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('freemem');
+      expect(metrics.freemem).equal(1922719744);
     });
 
     after(function() {
@@ -1016,21 +997,21 @@ describe('/lib/orders/system', function () {
       'DirectMap1G:     1048576 kB'].join('\n');
 
     before(function () {
-      mm.data(require('fs'), 'readFile', mock);
+      mm.data(require('fs').promises, 'readFile', mock);
       mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('os'), 'release', '3.14');
     });
 
-    it('should ok', function (done) {
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('freemem');
-        expect(metrics.freemem).equal(1922719744);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('freemem');
+      expect(metrics.freemem).equal(1922719744);
     });
 
     after(function() {
@@ -1058,28 +1039,27 @@ describe('/lib/orders/system', function () {
       'DirectMap1G:     1048576 kB'].join('\n');
 
     before(function () {
-      mm.data(require('fs'), 'readFile', mock);
+      mm.data(require('fs').promises, 'readFile', mock);
       mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('os'), 'release', '3.13');
     });
 
-    it('should ok', function (done) {
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('freemem');
-        expect(metrics.freemem).equal(2707914752);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('freemem');
+      expect(metrics.freemem).equal(2707914752);
     });
 
     after(function() {
       mm.restore();
     });
   });
-
 
   describe('mock linux 2.13.0-32-generic free memory', function () {
     const mock = [
@@ -1100,28 +1080,27 @@ describe('/lib/orders/system', function () {
       'DirectMap1G:     1048576 kB'].join('\n');
 
     before(function () {
-      mm.data(require('fs'), 'readFile', mock);
+      mm.data(require('fs').promises, 'readFile', mock);
       mm.syncData(require('os'), 'type', 'Linux');
       mm.syncData(require('os'), 'release', '2.13.0-32-generic');
     });
 
-    it('should ok', function (done) {
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('freemem');
-        expect(metrics.freemem).equal(2707914752);
-        done();
-      });
+    it('should ok', async function () {
+      const job = new SystemJob();
+      expect(job.isLinux).equal(true);
+      expect(job.isDocker).equal(false);
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('freemem');
+      expect(metrics.freemem).equal(2707914752);
     });
 
     after(function() {
       mm.restore();
     });
   });
-
 
   describe('mock nonLinux', function () {
     const mock_stdout = 'nonLinux';
@@ -1130,26 +1109,24 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('os'), 'type', mock_stdout);
     });
 
-    it('should ok', function (done) {
-      system.init();
-      system.run(function (err, params) {
-        expect(err).not.to.be.ok();
-        expect(params.type).to.be('system');
-        expect(params.metrics).to.be.ok();
-        const metrics = params.metrics;
-        expect(metrics).to.have.key('uptime');
-        expect(metrics).to.have.key('load1');
-        expect(metrics).to.have.key('load5');
-        expect(metrics).to.have.key('load15');
-        expect(metrics).to.have.key('cpu');
-        expect(metrics).to.have.key('cpu_count');
-        done();
-      });
-    });
-    after(function() {
-      mm.restore();
+    it('should ok', async function () {
+      const job = new SystemJob();
+      const params = await job.run();
+      expect(params.type).to.be('system');
+      expect(params.metrics).to.be.ok();
+      const metrics = params.metrics;
+      expect(metrics).to.have.key('uptime');
+      expect(metrics).to.have.key('load1');
+      expect(metrics).to.have.key('load5');
+      expect(metrics).to.have.key('load15');
+      expect(metrics).to.have.key('cpu');
+      expect(metrics).to.have.key('cpu_count');
     });
   });
 
-
+  after(function() {
+    mm.restore();
+  });
 });
+
+

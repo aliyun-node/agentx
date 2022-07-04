@@ -11,7 +11,7 @@ const helper = require('../../lib/utils');
 
 const tracingLog = rewire('../../lib/orders/tracing_log');
 
-describe('/lib/orders/tracing_log.js', function () {
+xdescribe('/lib/orders/tracing_log.js', function () {
   before(function () {
     mm(helper, 'getYYYYMMDD', function () {
       return '20180515';
