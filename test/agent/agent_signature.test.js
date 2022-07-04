@@ -1,9 +1,13 @@
 'use strict';
+
+const path = require('path');
+
+const mm = require('mm');
 const expect = require('expect.js');
 const WebSocketServer = require('ws').Server;
+
 const Agent = require('../../lib/agent');
 const utils = require('../../lib/utils');
-const mm = require('mm');
 
 describe('/lib/agent -> register signature', function () {
   describe('register signature failed with lib model', function () {
@@ -40,6 +44,7 @@ describe('/lib/agent -> register signature', function () {
         appid: 1,
         secret: '2',
         libMode: true,
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
@@ -116,6 +121,7 @@ describe('/lib/agent -> register signature', function () {
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
@@ -190,6 +196,7 @@ describe('/lib/agent -> register signature', function () {
         appid: 1,
         secret: '2',
         libMode: true,
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
@@ -264,6 +271,7 @@ describe('/lib/agent -> register signature', function () {
         appid: 1,
         secret: '2',
         libMode: true,
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
@@ -340,6 +348,7 @@ describe('/lib/agent -> register signature', function () {
         server: 'localhost:8992',
         appid: 1,
         secret: '2',
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
@@ -413,6 +422,7 @@ describe('/lib/agent -> register signature', function () {
         appid: 1,
         secret: '2',
         libMode: true,
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },

@@ -1,4 +1,6 @@
 'use strict';
+
+const path = require('path');
 const expect = require('expect.js');
 const WebSocketServer = require('ws').Server;
 const Agent = require('../../lib/agent');
@@ -107,6 +109,7 @@ function createAgent(config) {
     heartbeatInterval: 0.1, // heartbeat: 100ms
     reconnectDelayBase: 0, // reconnect: 0 - 100ms
     reconnectDelay: 0.1,
+    cmddir: path.join(__dirname, '../cmddir'),
     logger: {
       info: function () { },
       warn: function () { },
