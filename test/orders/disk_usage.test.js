@@ -1,9 +1,9 @@
 'use strict';
 
-var path = require('path');
-var expect = require('expect.js');
-var mm = require('mm');
-var disk = require('../../lib/orders/disk_usage');
+const path = require('path');
+const expect = require('expect.js');
+const mm = require('mm');
+const disk = require('../../lib/orders/disk_usage');
 
 describe('/lib/orders/disk_usage.js', function () {
   before(function () {
@@ -17,7 +17,7 @@ describe('/lib/orders/disk_usage.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('disk_usage');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics).to.have.property('used_percent');
       expect(metrics.used_percent).to.lessThan(100);
       done();
@@ -47,7 +47,7 @@ describe('/lib/orders/disk_usage.js', function () {
   });
 
   describe('mock disk usage', function () {
-    var mock_stdout = [
+    const mock_stdout = [
       'Filesystem     1024-blocks     Used Available Capacity Mounted on',
       'udev               3918976        4   3918972       1% /dev',
       'tmpfs               786024     1216    784808       1% /run',
@@ -73,7 +73,7 @@ describe('/lib/orders/disk_usage.js', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('disk_usage');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.property('used_percent');
         expect(metrics.used_percent).equal(95);
         expect(metrics['/']).equal(95);
@@ -93,7 +93,7 @@ describe('/lib/orders/disk_usage.js', function () {
 
 
   describe('user specify monitored disk', function () {
-    var mock_stdout = [
+    const mock_stdout = [
       'Filesystem     1024-blocks      Used Available Capacity Mounted on',
       '/dev/sda3        580507708 271079084 309428624      47% /data'
     ].join('\n');
@@ -112,7 +112,7 @@ describe('/lib/orders/disk_usage.js', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('disk_usage');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.property('used_percent');
         expect(metrics.used_percent).equal(47);
         expect(metrics['/data']).equal(47);

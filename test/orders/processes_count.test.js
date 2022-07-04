@@ -1,9 +1,9 @@
 'use strict';
 
-var path = require('path');
-var expect = require('expect.js');
-var mm = require('mm');
-var counter = require('../../lib/orders/processes_count');
+const path = require('path');
+const expect = require('expect.js');
+const mm = require('mm');
+const counter = require('../../lib/orders/processes_count');
 
 describe('/lib/orders/processes_count.js', function () {
   before(function () {
@@ -17,7 +17,7 @@ describe('/lib/orders/processes_count.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('processes_count');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics).to.have.property('node_count');
       expect(metrics.node_count).to.be.a('number');
       expect(metrics.node_count).to.be.above(0);

@@ -1,14 +1,14 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var expect = require('expect.js');
-var rewire = require('rewire');
-var mm = require('mm');
+const expect = require('expect.js');
+const rewire = require('rewire');
+const mm = require('mm');
 
-var helper = require('../../lib/utils');
+const helper = require('../../lib/utils');
 
-var slowHttp = rewire('../../lib/orders/slow_http');
+const slowHttp = rewire('../../lib/orders/slow_http');
 
 describe('/lib/orders/slow_http.js', function () {
   before(function () {
@@ -30,7 +30,7 @@ describe('/lib/orders/slow_http.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('slow_http');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics).to.have.length(2);
       metrics.forEach(function (item) {
         expect(item).to.have.property('timestamp');
@@ -56,22 +56,22 @@ describe('/lib/orders/slow_http.js', function () {
   });
 
   it('getSlowHTTPLog should ok', function () {
-    var line0 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+    const line0 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 811';
-    var line1 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+    const line1 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 810';
-    var line2 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+    const line2 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 809';
-    var line3 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+    const line3 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 807';
-    var line4 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
+    const line4 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 -> ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 808';
-    var line5 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 <- ' +
+    const line5 = '[2016-02-29T09:09:53.988Z] ::ffff:127.0.0.1 <- ' +
       'dev.node.test.com "GET /home/apps/13/ HTTP/1.1 200" 806';
-    var getSlowHTTPLog = slowHttp.__get__('getSlowHTTPLog');
-    var parsed = getSlowHTTPLog([line0, line1, line2, line3, line4, line5]);
+    const getSlowHTTPLog = slowHttp.__get__('getSlowHTTPLog');
+    const parsed = getSlowHTTPLog([line0, line1, line2, line3, line4, line5]);
     expect(parsed).to.have.length(2);
-    var struct = parsed[0];
+    const struct = parsed[0];
     expect(struct).to.have.property('timestamp', '2016-02-29T09:09:53.988Z');
     expect(struct).to.have.property('from', '::ffff:127.0.0.1');
     expect(struct).to.have.property('type', 'receive');
@@ -84,8 +84,8 @@ describe('/lib/orders/slow_http.js', function () {
   });
 
   it('getCurrentLogPath should ok', function () {
-    var getCurrentLogPath = slowHttp.__get__('getCurrentLogPath');
-    var logPath = path.join(__dirname, '../logdir/access-20180301.log');
+    const getCurrentLogPath = slowHttp.__get__('getCurrentLogPath');
+    const logPath = path.join(__dirname, '../logdir/access-20180301.log');
     expect(getCurrentLogPath()).to.be(logPath);
   });
 
@@ -119,8 +119,8 @@ describe('/lib/orders/slow_http.js', function () {
   });
 
   it('sortByRT should ok', function () {
-    var sortByRT = slowHttp.__get__('sortByRT');
-    var a = [{rt: 10}, {rt: 12}, {rt: 5}, {rt: 5}];
+    const sortByRT = slowHttp.__get__('sortByRT');
+    const a = [{rt: 10}, {rt: 12}, {rt: 5}, {rt: 5}];
     a.sort(sortByRT);
     expect(a).to.eql([ { rt: 12 }, { rt: 10 }, { rt: 5 }, {rt: 5} ]);
   });

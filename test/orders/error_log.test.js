@@ -1,9 +1,9 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var expect = require('expect.js');
-var errorLog = require('../../lib/orders/error_log');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect.js');
+const errorLog = require('../../lib/orders/error_log');
 
 describe('/lib/orders/error_log.js', function () {
 
@@ -18,15 +18,15 @@ describe('/lib/orders/error_log.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('error_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics).to.have.length(0);
       done();
     });
   });
 
   it('should ok with new errors', function (done) {
-    var errPath = path.join(__dirname, '../logs', 'error.log');
-    var errbackup = fs.readFileSync(errPath, 'utf8');
+    const errPath = path.join(__dirname, '../logs', 'error.log');
+    const errbackup = fs.readFileSync(errPath, 'utf8');
 
     fs.appendFileSync(errPath, errbackup);
 
@@ -34,7 +34,7 @@ describe('/lib/orders/error_log.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('error_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics).to.have.length(2);
       metrics.forEach(function (item) {
         expect(item.type).to.be('DUPLICATEError');

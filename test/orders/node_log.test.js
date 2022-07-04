@@ -1,15 +1,15 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var expect = require('expect.js');
-var rewire = require('rewire');
-var mm = require('mm');
+const expect = require('expect.js');
+const rewire = require('rewire');
+const mm = require('mm');
 
-var helper = require('../../lib/utils');
+const helper = require('../../lib/utils');
 
-var nodeLog = rewire('../../lib/orders/node_log');
+const nodeLog = rewire('../../lib/orders/node_log');
 
 describe('/lib/orders/node_log.js', function () {
   before(function () {
@@ -28,14 +28,14 @@ describe('/lib/orders/node_log.js', function () {
 
   it('should ok', function (done) {
     // backup logfile
-    var logPath = path.join(__dirname, '../logdir/node-20180301.log');
-    var log = fs.readFileSync(logPath, 'utf8');
+    const logPath = path.join(__dirname, '../logdir/node-20180301.log');
+    const log = fs.readFileSync(logPath, 'utf8');
 
     nodeLog.run(function (err, params) {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('node_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
       expect(metrics.data).to.have.length(0);
       metrics.data.forEach(function (item) {
@@ -43,7 +43,7 @@ describe('/lib/orders/node_log.js', function () {
       });
     });
 
-    var append = '[2018-03-01 20:24:24.453835] [info] [heap] [45020]' +
+    const append = '[2018-03-01 20:24:24.453835] [info] [heap] [45020]' +
       ' rss: 69312512, vsz: 3160494080, heap_used: 26779680, ' +
       'heap_available: 1486138032, heap_total: 59792128, ' +
       'heap_limit: 1535115264, heap_executeable: 8388608, ' +
@@ -68,7 +68,7 @@ describe('/lib/orders/node_log.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('node_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
       expect(metrics.data).to.have.length(35);
       metrics.data.forEach(function (item) {
@@ -98,7 +98,7 @@ describe('/lib/orders/node_log.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('node_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
       expect(metrics.data).to.have.length(0);
       done();
@@ -106,11 +106,11 @@ describe('/lib/orders/node_log.js', function () {
   });
 
   it('getNodeLog should ok', function () {
-    var logPath = path.join(__dirname, '../logdir/node-20180301.log');
-    var log = fs.readFileSync(logPath, 'utf8');
-    var getNodeLog = nodeLog.__get__('getNodeLog');
-    var parsed = getNodeLog(log);
-    var procs = {};
+    const logPath = path.join(__dirname, '../logdir/node-20180301.log');
+    const log = fs.readFileSync(logPath, 'utf8');
+    const getNodeLog = nodeLog.__get__('getNodeLog');
+    const parsed = getNodeLog(log);
+    const procs = {};
     parsed.data.forEach((item) => {
       if (!procs[item.pid]) {
         procs[item.pid] = {};
@@ -121,8 +121,8 @@ describe('/lib/orders/node_log.js', function () {
   });
 
   it('getCurrentLogPath should ok', function () {
-    var getCurrentLogPath = nodeLog.__get__('getCurrentLogPath');
-    var logPath = path.join(__dirname, '../logdir/node-20180301.log');
+    const getCurrentLogPath = nodeLog.__get__('getCurrentLogPath');
+    const logPath = path.join(__dirname, '../logdir/node-20180301.log');
     expect(getCurrentLogPath()).to.be(logPath);
   });
 

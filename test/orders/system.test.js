@@ -1,11 +1,11 @@
 'use strict';
-var path = require('path');
-var expect = require('expect.js');
-var system = require('../../lib/orders/system');
-var mm = require('mm');
+const path = require('path');
+const expect = require('expect.js');
+const system = require('../../lib/orders/system');
+const mm = require('mm');
 
 
-var mock_cpu = [
+const mock_cpu = [
   'cpu  5313978 56110 1292246 14983316 177088 0 12355 0 0 0',
   'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
   'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
@@ -20,7 +20,7 @@ var mock_cpu = [
   'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
 ].join('\n');
 
-var mock_cpu_1 = [
+const mock_cpu_1 = [
   'cpu  5313978 56110 1292246 14983316 177088 0 12355 0 0',
   'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
   'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
@@ -35,7 +35,7 @@ var mock_cpu_1 = [
   'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
 ].join('\n');
 
-var mock_cpu_2 = [
+const mock_cpu_2 = [
   'cpu  5313978 56110 1292246 14983316 177088 0 12355 0',
   'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
   'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
@@ -50,7 +50,7 @@ var mock_cpu_2 = [
   'softirq 85487288 262 30666935 631 125824 1524483 15 143418 29334126 0 23691594'
 ].join('\n');
 
-var mock_cpu_3 = [
+const mock_cpu_3 = [
   'cpu  5313978 56110 1292246 14983316 177088 0 12355',
   'cpu0 1379306 9009 329765 10306868 111389 0 3383 0 0 0',
   'cpu1 1285064 8472 313706 1578339 12760 0 1208 0 0 0',
@@ -66,7 +66,7 @@ var mock_cpu_3 = [
 ].join('\n');
 
 
-var mock_mem = [
+const mock_mem = [
   'MemTotal:        7852888 kB',
   'MemFree:          635184 kB',
   'MemAvailable:    1877656 kB',
@@ -83,13 +83,13 @@ var mock_mem = [
   'DirectMap2M:     7340032 kB',
   'DirectMap1G:     1048576 kB'].join('\n');
 
-var mock_load = '0.51 0.36 0.50 2/1253 58';
+const mock_load = '0.51 0.36 0.50 2/1253 58';
 
 
 describe('/lib/orders/system', function () {
 
   describe('mock docker cgroup', function () {
-    var mock = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
+    const mock = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '10:freezer:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '9:net_prio,net_cls:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '8:blkio:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
@@ -105,10 +105,9 @@ describe('/lib/orders/system', function () {
       mm.syncData(require('fs'), 'readFileSync', mock);
     });
 
-    it('should ok', function(done) {
+    it('should ok', function() {
       system.init();
       expect(system.isDocker).equal(true);
-      done();
     });
 
     after(function() {
@@ -118,7 +117,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock docker isDocker true', function () {
-    var mock = [ '12:pids:/init.scope',
+    const mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
       '10:freezer:/',
       '9:devices:/init.scope',
@@ -148,7 +147,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('mock docker no cgroup no dockerenv isDocker true', function () {
-    var mock = [ '12:pids:/init.scope',
+    const mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
       '10:freezer:/',
       '9:devices:/init.scope',
@@ -178,7 +177,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('mock docker no cgroup no dockerenv isDocker string', function () {
-    var mock = [ '12:pids:/init.scope',
+    const mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
       '10:freezer:/',
       '9:devices:/init.scope',
@@ -210,7 +209,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock docker isDocker false', function () {
-    var mock = [ '12:pids:/init.scope',
+    const mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
       '10:freezer:/',
       '9:devices:/init.scope',
@@ -241,7 +240,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock docker dockerenv', function () {
-    var mock = [ '12:pids:/init.scope',
+    const mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
       '10:freezer:/',
       '9:devices:/init.scope',
@@ -271,7 +270,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('mock docker no cgroup no dockerenv', function () {
-    var mock = [ '12:pids:/init.scope',
+    const mock = [ '12:pids:/init.scope',
       '11:hugetlb:/',
       '10:freezer:/',
       '9:devices:/init.scope',
@@ -318,7 +317,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('mock docker error no period', function () {
-    var mock_readfile = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
+    const mock_readfile = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '10:freezer:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '9:net_prio,net_cls:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '8:blkio:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
@@ -330,7 +329,7 @@ describe('/lib/orders/system', function () {
       '2:cpuset:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '1:name=systemd:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope' ].join('\n');
 
-    var mock = function(f) {
+    const mock = function(f) {
       const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
       const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
       const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
@@ -371,7 +370,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock docker error no quota', function () {
-    var mock_readfile = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
+    const mock_readfile = [ '11:pids:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '10:freezer:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '9:net_prio,net_cls:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '8:blkio:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
@@ -383,7 +382,7 @@ describe('/lib/orders/system', function () {
       '2:cpuset:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope',
       '1:name=systemd:/system.slice/docker-03592bf11fc8b122fa6f5a4f433ff23adea7b855b3d2c944267833b8cd9b0608.scope' ].join('\n');
 
-    var mock = function(f) {
+    const mock = function(f) {
       const period_path = '/sys/fs/cgroup/cpu/cpu.cfs_period_us';
       const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
       const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
@@ -427,7 +426,7 @@ describe('/lib/orders/system', function () {
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '5000';
       }
@@ -462,7 +461,7 @@ describe('/lib/orders/system', function () {
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '15000';
       }
@@ -499,7 +498,7 @@ describe('/lib/orders/system', function () {
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '85000';
       }
@@ -535,7 +534,7 @@ describe('/lib/orders/system', function () {
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '-1';
       }
@@ -572,7 +571,7 @@ describe('/lib/orders/system', function () {
     const quota_path = '/sys/fs/cgroup/cpu/cpu.cfs_quota_us';
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '40000';
       }
@@ -615,7 +614,7 @@ describe('/lib/orders/system', function () {
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '15000';
       }
@@ -634,7 +633,7 @@ describe('/lib/orders/system', function () {
       return '::';
     };
 
-    var mockmem = function(f, options,cb) {
+    const mockmem = function(f, options,cb) {
       if (f === '/proc/stat') {
         return cb(null, mock_cpu);
       }
@@ -686,7 +685,7 @@ describe('/lib/orders/system', function () {
     const cpus_path = '/sys/fs/cgroup/cpuset/cpuset.cpus';
 
 
-    var mock = function(x) {
+    const mock = function(x) {
       if (x === quota_path) {
         return '15000';
       }
@@ -705,7 +704,7 @@ describe('/lib/orders/system', function () {
       return '::';
     };
 
-    var mockmem = function(f, options,cb) {
+    const mockmem = function(f, options,cb) {
       if (f === '/proc/stat') {
         return cb(null, mock_cpu);
       }
@@ -747,7 +746,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('linux memory cpu load', function () {
-    var mock = function(f, options,cb) {
+    const mock = function(f, options,cb) {
       if (f === '/proc/stat') {
         return cb(null, mock_cpu);
       }
@@ -774,7 +773,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('uptime');
         expect(metrics).to.have.key('cpu_count');
         expect(metrics['load1']).equal(0.51);
@@ -792,7 +791,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('linux memory cpu load 1', function () {
-    var mock = function(f, options,cb) {
+    const mock = function(f, options,cb) {
       if (f === '/proc/stat') {
         return cb(null, mock_cpu_1);
       }
@@ -819,7 +818,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('uptime');
         expect(metrics).to.have.key('cpu_count');
         expect(metrics['load1']).equal(0.51);
@@ -837,7 +836,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('linux memory cpu load 2', function () {
-    var mock = function(f, options,cb) {
+    const mock = function(f, options,cb) {
       if (f === '/proc/stat') {
         return cb(null, mock_cpu_2);
       }
@@ -864,7 +863,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('uptime');
         expect(metrics).to.have.key('cpu_count');
         expect(metrics['load1']).equal(0.51);
@@ -883,7 +882,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('linux memory cpu load 3', function () {
-    var mock = function(f, options,cb) {
+    const mock = function(f, options,cb) {
       if (f === '/proc/stat') {
         return cb(null, mock_cpu_3);
       }
@@ -910,7 +909,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('uptime');
         expect(metrics).to.have.key('cpu_count');
         expect(metrics['load1']).equal(0.51);
@@ -929,7 +928,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock linux loadavg nok', function () {
-    var mock = '110.51 aa 0.50 2/1253 58';
+    const mock = '110.51 aa 0.50 2/1253 58';
 
     before(function () {
       mm.data(require('fs'), 'readFile', mock);
@@ -941,7 +940,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('uptime');
         expect(metrics).to.have.key('load1');
         expect(metrics).to.have.key('load5');
@@ -958,7 +957,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('mock linux 4.13.0-32-generic free memory', function () {
-    var mock = [
+    const mock = [
       'MemTotal:        7852888 kB',
       'MemFree:          635184 kB',
       'MemAvailable:    1877656 kB',
@@ -986,7 +985,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('freemem');
         expect(metrics.freemem).equal(1922719744);
         done();
@@ -999,7 +998,7 @@ describe('/lib/orders/system', function () {
   });
 
   describe('mock linux 3.14 free memory', function () {
-    var mock = [
+    const mock = [
       'MemTotal:        7852888 kB',
       'MemFree:          635184 kB',
       'MemAvailable:    1877656 kB',
@@ -1027,7 +1026,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('freemem');
         expect(metrics.freemem).equal(1922719744);
         done();
@@ -1041,7 +1040,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock linux 3.13 free memory', function () {
-    var mock = [
+    const mock = [
       'MemTotal:        7852888 kB',
       'MemFree:          635184 kB',
       'MemAvailable:    1877656 kB',
@@ -1069,7 +1068,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('freemem');
         expect(metrics.freemem).equal(2707914752);
         done();
@@ -1083,7 +1082,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock linux 2.13.0-32-generic free memory', function () {
-    var mock = [
+    const mock = [
       'MemTotal:        7852888 kB',
       'MemFree:          635184 kB',
       'MemAvailable:    1877656 kB',
@@ -1111,7 +1110,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('freemem');
         expect(metrics.freemem).equal(2707914752);
         done();
@@ -1125,7 +1124,7 @@ describe('/lib/orders/system', function () {
 
 
   describe('mock nonLinux', function () {
-    var mock_stdout = 'nonLinux';
+    const mock_stdout = 'nonLinux';
 
     before(function () {
       mm.syncData(require('os'), 'type', mock_stdout);
@@ -1137,7 +1136,7 @@ describe('/lib/orders/system', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('system');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics).to.have.key('uptime');
         expect(metrics).to.have.key('load1');
         expect(metrics).to.have.key('load5');
