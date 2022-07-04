@@ -13,5 +13,6 @@ exports.check = async function check(agent) {
       return 'ok';
     }
   }
+
   return 'failed';
 };

@@ -131,7 +131,7 @@ describe('/lib/agent', function () {
     expect(result).to.be('ok');
   });
 
-  it('should not exit when run with libMode',async function () {
+  describe('should not exit when run with libMode', function () {
     const agent = new Agent({
       libMode: true,
       server: 'localhost:8990',
@@ -141,41 +141,47 @@ describe('/lib/agent', function () {
       cmddir: '/tmp/'
     });
 
-    agent.run();
-    const result = await helper.check(agent);
-
-    expect(result).to.be('ok');
-    // mock signature not exist
-    agent.onMessage({
-      signature: null,
-      type: 'error',
-      params: {
-        error: 'mock error'
-      }
+    after(function () {
+      agent.teardown();
     });
-    // mock REG_NOK result
-    const msg = {
-      type: 'result',
-      params: {
-        result: 'REG_NOK'
-      }
-    };
-    const signature = agent.signature(msg);
-    msg.signature = signature;
-    agent.onMessage(msg);
 
-    // mock error type
-    const msg2 = {
-      type: 'error',
-      params: {
-        error: 'mock error type'
-      }
-    };
-    const signature2 = agent.signature(msg2);
-    msg2.signature = signature2;
-    agent.onMessage(msg2);
-    agent.sendMessage({type: 'close'});
-    agent.notReconnect = true;
-    agent.teardown();
+    it('should not exit when run with libMode',async function () {
+      agent.run();
+      const result = await helper.check(agent);
+      expect(result).to.be('ok');
+      // mock signature not exist
+      agent.onMessage({
+        signature: null,
+        type: 'error',
+        params: {
+          error: 'mock error'
+        }
+      });
+      // mock REG_NOK result
+      const msg = {
+        type: 'result',
+        params: {
+          result: 'REG_NOK'
+        }
+      };
+      const signature = agent.signature(msg);
+      msg.signature = signature;
+      agent.onMessage(msg);
+
+      // mock error type
+      const msg2 = {
+        type: 'error',
+        params: {
+          error: 'mock error type'
+        }
+      };
+      const signature2 = agent.signature(msg2);
+      msg2.signature = signature2;
+      agent.onMessage(msg2);
+      agent.sendMessage({type: 'close'});
+      agent.notReconnect = true;
+      agent.teardown();
+    });
   });
+
 });

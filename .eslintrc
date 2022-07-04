@@ -43,7 +43,9 @@
   },
   "globals": {
     "describe": true,
+    "xdescribe": true,
     "it": true,
+    "xit": true,
     "before": true,
     "after": true
   },

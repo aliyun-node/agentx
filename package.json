@@ -5,7 +5,8 @@
   "scripts": {
     "lint": "eslint --fix .",
     "test-dev": "mocha -t 5000 -R spec",
-    "test": "mocha -t 5000 -R spec test/**/*.test.js test/*.test.js",
+    "cov-dev": "nyc --reporter=html --reporter=text --reporter=lcov npm run test-dev",
+    "test": "mocha --exit -b -t 5000 -R spec test/**/*.test.js test/*.test.js",
     "cov": "nyc --reporter=html --reporter=text --reporter=lcov npm run test",
     "ci": "npm run lint && npm run cov && codecov",
     "ut": "mocha -t 5000 -R spec"
