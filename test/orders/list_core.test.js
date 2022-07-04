@@ -1,10 +1,10 @@
 'use strict';
 
-var mm = require('mm');
-var fs = require('fs');
-var path = require('path');
-var expect = require('expect.js');
-var listCore = require('../../lib/orders/list_core');
+const mm = require('mm');
+const fs = require('fs');
+const path = require('path');
+const expect = require('expect.js');
+let listCore = require('../../lib/orders/list_core');
 
 describe('/lib/orders/list_core.js', function () {
   if (require('os').platform() !== 'linux') {
@@ -44,7 +44,7 @@ describe('/lib/orders/list_core.js', function () {
     return;
   }
 
-  var mock = {
+  const mock = {
     isFile: function () { return true; },
     dev: 2053,
     mode: 16893,
@@ -71,8 +71,8 @@ describe('/lib/orders/list_core.js', function () {
   });
 
   it('core created before agentx startup will not reported', function (done) {
-    var dir = path.join(__dirname, '../logdir');
-    var corePath = path.join(dir, 'core.123');
+    const dir = path.join(__dirname, '../logdir');
+    const corePath = path.join(dir, 'core.123');
     fs.writeFileSync(corePath, '');
     listCore.init({ coredir: [path.join(__dirname, '../logdir')] });
 
@@ -119,8 +119,8 @@ describe('/lib/orders/list_core.js', function () {
   }
 
   it('should ok when specify the coredir', function (done) {
-    var dir = path.join(__dirname, '../logdir');
-    var corePath = path.join(dir, 'core.123');
+    const dir = path.join(__dirname, '../logdir');
+    const corePath = path.join(dir, 'core.123');
     setTimeout(function () {
       listCore.init({ coredir: [path.join(__dirname, '../logdir')] });
       fs.writeFileSync(corePath, '');
@@ -180,10 +180,10 @@ describe('/lib/orders/list_core.js', function () {
   }
 
   it('should ok when duplicate dir configured', function (done) {
-    var dir = path.join(__dirname, '../logdir');
-    var corePath = path.join(dir, 'core.123');
+    const dir = path.join(__dirname, '../logdir');
+    const corePath = path.join(dir, 'core.123');
     setTimeout(function () {
-      var d = path.join(__dirname, '../logdir');
+      const d = path.join(__dirname, '../logdir');
       listCore.init({ coredir: [d, d, d] });
       fs.writeFileSync(corePath, '');
       listCore.run(function (err, params) {
@@ -204,11 +204,11 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
     return;
   }
 
-  var dir = path.join(__dirname, '../logdir');
-  var corePath1 = path.join(dir, 'core.12345');
-  var corePath2 = path.join(dir, 'coredump_12345');
-  var corePath3 = path.join(dir, 'coredump_23456');
-  var mock = path.join(dir, 'coredump_%e_%P');
+  const dir = path.join(__dirname, '../logdir');
+  const corePath1 = path.join(dir, 'core.12345');
+  const corePath2 = path.join(dir, 'coredump_12345');
+  const corePath3 = path.join(dir, 'coredump_23456');
+  const mock = path.join(dir, 'coredump_%e_%P');
   before(function () {
     mm.syncData(require('fs'), 'readFileSync', mock);
   });
@@ -225,8 +225,8 @@ describe('should ok when coredir specified by /proc/sys/kernel/core_pattern', fu
         expect(params.type).to.be('coredump');
         expect(params.metrics).to.be.ok();
         expect(params.metrics.data.length).to.be(3);
-        var cores = params.metrics.data;
-        var paths = [cores[0].path, cores[1].path, cores[2].path];
+        const cores = params.metrics.data;
+        const paths = [cores[0].path, cores[1].path, cores[2].path];
         expect(paths.indexOf(corePath1)).not.to.be(-1);
         expect(paths.indexOf(corePath2)).not.to.be(-1);
         expect(paths.indexOf(corePath3)).not.to.be(-1);
@@ -249,7 +249,7 @@ describe('should ok when core dumped to PWD', function () {
     return;
   }
 
-  var corePath = path.join(process.env.PWD, 'core.56789');
+  const corePath = path.join(process.env.PWD, 'core.56789');
 
   it('should ok when specify the core dir', function (done) {
     listCore.init();

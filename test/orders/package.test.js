@@ -1,8 +1,8 @@
 'use strict';
 
-var path = require('path');
-var expect = require('expect.js');
-var pack = require('../../lib/orders/package');
+const path = require('path');
+const expect = require('expect.js');
+const pack = require('../../lib/orders/package');
 
 describe('/lib/orders/package.js', function () {
   before(function () {
@@ -19,7 +19,7 @@ describe('/lib/orders/package.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('package');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(Array.isArray(metrics)).to.be.ok();
       expect(metrics.length > 0).to.be.ok();
       metrics.forEach(function (metric) {

@@ -1,34 +1,34 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
-var cp = require('child_process');
+const fs = require('fs');
+const path = require('path');
+const cp = require('child_process');
 
-var expect = require('expect.js');
-var rewire = require('rewire');
-var mm = require('mm');
+const expect = require('expect.js');
+const rewire = require('rewire');
+const mm = require('mm');
 
-var helper = require('../../lib/utils');
+const helper = require('../../lib/utils');
 
-var cleaner = rewire('../../lib/orders/clean_log');
+const cleaner = rewire('../../lib/orders/clean_log');
 
-var unixServerPath = path.join(__dirname, '../fixtures/unixServer.js');
+const unixServerPath = path.join(__dirname, '../fixtures/unixServer.js');
 
-var oldfile1 = path.join(__dirname, '../logdir/node-20180225.log');
-var oldfile2 = path.join(__dirname, '../logdir/access-20180225.log');
-var oldfile3 = path.join(__dirname, '../logdir/tracing-20180225.log');
-var oldfile4 = path.join(__dirname, '../logdir/node-20180226.log');
-var oldfile5 = path.join(__dirname, '../logdir/access-20180226.log');
-var oldfile6 = path.join(__dirname, '../logdir/tracing-20180226.log');
-var oldfile7 = path.join(__dirname, '../logdir/node-20180227.log');
-var oldfile8 = path.join(__dirname, '../logdir/access-20180227.log');
-var oldfile9 = path.join(__dirname, '../logdir/tracing-20180227.log');
+const oldfile1 = path.join(__dirname, '../logdir/node-20180225.log');
+const oldfile2 = path.join(__dirname, '../logdir/access-20180225.log');
+const oldfile3 = path.join(__dirname, '../logdir/tracing-20180225.log');
+const oldfile4 = path.join(__dirname, '../logdir/node-20180226.log');
+const oldfile5 = path.join(__dirname, '../logdir/access-20180226.log');
+const oldfile6 = path.join(__dirname, '../logdir/tracing-20180226.log');
+const oldfile7 = path.join(__dirname, '../logdir/node-20180227.log');
+const oldfile8 = path.join(__dirname, '../logdir/access-20180227.log');
+const oldfile9 = path.join(__dirname, '../logdir/tracing-20180227.log');
 
 // the inexist file
-var oldfile10 = path.join(__dirname, '../logdir/node-20151202.log');
+const oldfile10 = path.join(__dirname, '../logdir/node-20151202.log');
 
-var socketPids = [];
-var socketsLength = 10;
+const socketPids = [];
+const socketsLength = 10;
 
 describe('/lib/orders/clean_log.js', function () {
   before(function () {
@@ -111,16 +111,16 @@ describe('/lib/orders/clean_log.js', function () {
   });
 
   it('removeFiles should ok', function (done) {
-    var removeFiles = cleaner.__get__('removeFiles');
-    var logdir = path.join(__dirname, '../logdir');
+    const removeFiles = cleaner.__get__('removeFiles');
+    const logdir = path.join(__dirname, '../logdir');
     removeFiles(logdir, [], function (err) {
       done(err);
     });
   });
 
   it('removeFiles should ok with inexist file', function (done) {
-    var removeFiles = cleaner.__get__('removeFiles');
-    var logdir = path.join(__dirname, '../logdir');
+    const removeFiles = cleaner.__get__('removeFiles');
+    const logdir = path.join(__dirname, '../logdir');
     removeFiles(logdir, [oldfile10], function (err) {
       expect(err).to.be.ok();
       expect(err.code).to.be('ENOENT');

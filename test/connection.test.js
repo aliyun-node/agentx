@@ -1,12 +1,12 @@
 'use strict';
 
-var expect = require('expect.js');
-var WebSocketServer = require('ws').Server;
-var Connection = require('../lib/connection');
-var packageInfo = require('../package.json');
+const expect = require('expect.js');
+const WebSocketServer = require('ws').Server;
+const Connection = require('../lib/connection');
+const packageInfo = require('../package.json');
 
 describe('/lib/connection', function () {
-  var wss;
+  let wss;
   before(function () {
     wss = new WebSocketServer({ port: 8089 });
     wss.on('connection', function connection(ws) {
@@ -35,8 +35,8 @@ describe('/lib/connection', function () {
   });
 
   it('new Connection should ok', function (done) {
-    var conn = new Connection('ws://localhost:8089/');
-    var count = 0;
+    const conn = new Connection('ws://localhost:8089/');
+    let count = 0;
     conn.on('open', function () {
       count++;
       conn.sendMessage({ type: 'register', params: { version: packageInfo.version, pid: process.pid } });

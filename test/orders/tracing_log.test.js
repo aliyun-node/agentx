@@ -1,15 +1,15 @@
 'use strict';
 
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var expect = require('expect.js');
-var rewire = require('rewire');
-var mm = require('mm');
+const expect = require('expect.js');
+const rewire = require('rewire');
+const mm = require('mm');
 
-var helper = require('../../lib/utils');
+const helper = require('../../lib/utils');
 
-var tracingLog = rewire('../../lib/orders/tracing_log');
+const tracingLog = rewire('../../lib/orders/tracing_log');
 
 describe('/lib/orders/tracing_log.js', function () {
   before(function () {
@@ -28,14 +28,14 @@ describe('/lib/orders/tracing_log.js', function () {
 
   it('should ok', function (done) {
     // backup logfile
-    var logPath = path.join(__dirname, '../logdir/tracing-20180515.log');
-    var log = fs.readFileSync(logPath, 'utf8');
+    const logPath = path.join(__dirname, '../logdir/tracing-20180515.log');
+    const log = fs.readFileSync(logPath, 'utf8');
 
     tracingLog.run(function (err, params) {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('tracing_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
       expect(metrics.data).to.have.length(0);
       metrics.data.forEach(function (item) {
@@ -43,7 +43,7 @@ describe('/lib/orders/tracing_log.js', function () {
       });
     });
 
-    var append = '{"traceId":"1e28345415263728868931001d0660","spanId":"1e28345415263728868931002d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span1","startTime":1526372886893,"rootTime":1526372886892,"duration":8713,"logs":[{"startTimeFromFullTrace":1,"logMessage":{"state":"timer1"}}],"tags":[{"timeout":8708.907699750824}]}\n'
+    const append = '{"traceId":"1e28345415263728868931001d0660","spanId":"1e28345415263728868931002d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span1","startTime":1526372886893,"rootTime":1526372886892,"duration":8713,"logs":[{"startTimeFromFullTrace":1,"logMessage":{"state":"timer1"}}],"tags":[{"timeout":8708.907699750824}]}\n'
       + 'dashboard $ cat /tmp/node-20151209.log\n'
       + '{"traceId":"1e28345415263728868931001d0660","spanId":"1e28345415263728868931003d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span1","startTime":1526372886893,"rootTime":1526372886892,"duration":9751,"logs":[{"startTimeFromFullTrace":1,"logMessage":{"state":"timer1"}}],"tags":[{"timeout":9746.823575296385}]}\n'
       + '{"traceId":"1e28345415263728868931001d0660","spanId":"1e28345415263728966441004d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span2","startTime":1526372896644,"rootTime":1526372886892,"duration":3003,"logs":[{"startTimeFromFullTrace":9752,"logMessage":{"state":"timer2"}}],"tags":[{"timeout":"3s"}]}\n'
@@ -58,7 +58,7 @@ describe('/lib/orders/tracing_log.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('tracing_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
       expect(metrics.data).to.have.length(5);
       metrics.data.forEach(function (item) {
@@ -66,7 +66,7 @@ describe('/lib/orders/tracing_log.js', function () {
       });
 
       // append array
-      var append2 = '[{"traceId":"1e28345415263728868931001d0661","spanId":"1e28345415263728868931002d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span1","startTime":1526372886893,"rootTime":1526372886892,"duration":8713,"logs":[{"startTimeFromFullTrace":1,"logMessage":{"state":"timer1"}}],"tags":[{"timeout":8708.907699750824}]},'
+      const append2 = '[{"traceId":"1e28345415263728868931001d0661","spanId":"1e28345415263728868931002d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span1","startTime":1526372886893,"rootTime":1526372886892,"duration":8713,"logs":[{"startTimeFromFullTrace":1,"logMessage":{"state":"timer1"}}],"tags":[{"timeout":8708.907699750824}]},'
         + '"dashboard $ cat /tmp/node-20151210.log",'
         + '{"traceId":"1e28345415263728868931001d0661","spanId":"1e28345415263728868931003d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span1","startTime":1526372886893,"rootTime":1526372886892,"duration":9751,"logs":[{"startTimeFromFullTrace":1,"logMessage":{"state":"timer1"}}],"tags":[{"timeout":9746.823575296385}]},'
         + '{"traceId":"1e28345415263728868931001d0661","spanId":"1e28345415263728966441004d0660","parentSpanId":"1e28345415263728868921000d0660","operationName":"child_span2","startTime":1526372896644,"rootTime":1526372886892,"duration":3003,"logs":[{"startTimeFromFullTrace":9752,"logMessage":{"state":"timer2"}}],"tags":[{"timeout":"3s"}]},'
@@ -80,7 +80,7 @@ describe('/lib/orders/tracing_log.js', function () {
         expect(err).not.to.be.ok();
         expect(params.type).to.be('tracing_log');
         expect(params.metrics).to.be.ok();
-        var metrics = params.metrics;
+        const metrics = params.metrics;
         expect(metrics.ok).to.be.ok();
         expect(metrics.data).to.have.length(5);
         metrics.data.forEach(function (item) {
@@ -96,7 +96,7 @@ describe('/lib/orders/tracing_log.js', function () {
           expect(err).not.to.be.ok();
           expect(params.type).to.be('tracing_log');
           expect(params.metrics).to.be.ok();
-          var metrics = params.metrics;
+          const metrics = params.metrics;
           expect(metrics.ok).to.be.ok();
           expect(metrics.data).to.have.length(5);
           metrics.data.forEach(function (item) {
@@ -119,7 +119,7 @@ describe('/lib/orders/tracing_log.js', function () {
       expect(err).not.to.be.ok();
       expect(params.type).to.be('tracing_log');
       expect(params.metrics).to.be.ok();
-      var metrics = params.metrics;
+      const metrics = params.metrics;
       expect(metrics.ok).to.be.ok();
       expect(metrics.data).to.have.length(5);
       done();
@@ -127,8 +127,8 @@ describe('/lib/orders/tracing_log.js', function () {
   });
 
   it('getCurrentLogPath should ok', function () {
-    var getCurrentLogPath = tracingLog.__get__('getCurrentLogPath');
-    var logPath = path.join(__dirname, '../logdir/tracing-20180515.log');
+    const getCurrentLogPath = tracingLog.__get__('getCurrentLogPath');
+    const logPath = path.join(__dirname, '../logdir/tracing-20180515.log');
     expect(getCurrentLogPath()).to.be(logPath);
   });
 

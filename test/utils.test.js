@@ -1,31 +1,31 @@
 'use strict';
 
-var path = require('path');
-var os = require('os');
-var mm = require('mm');
-var expect = require('expect.js');
-var utils = require('../lib/utils');
+const path = require('path');
+const os = require('os');
+const mm = require('mm');
+const expect = require('expect.js');
+const utils = require('../lib/utils');
 
 describe('/lib/utils', function () {
   it('random should ok', function () {
-    var val = utils.random(100, 200);
+    const val = utils.random(100, 200);
     expect(val).to.be.below(200);
     expect(val).to.be.above(99);
   });
 
   it('uid should ok', function () {
-    var uid1 = utils.uid();
-    var uid2 = utils.uid();
+    const uid1 = utils.uid();
+    const uid2 = utils.uid();
     expect(uid2 - uid1).to.be(1);
   });
 
   it('sha1 should ok', function () {
-    var sign = utils.sha1('str', 'key');
+    const sign = utils.sha1('str', 'key');
     expect(sign).to.be('f6f02bd6ba49b28f3df40822efe7291a57f42ca2');
   });
 
   it('exec should ok', function (done) {
-    var sh = path.join(__dirname, 'cmddir', 'echo.sh');
+    const sh = path.join(__dirname, 'cmddir', 'echo.sh');
     utils.execCommand(sh, ['hehe'], {}, function (err, stdout, stderr) {
       expect(err).to.not.be.ok();
       expect(stdout).to.be('hehe' + require('os').EOL);
@@ -35,7 +35,7 @@ describe('/lib/utils', function () {
   });
 
   it('execFile should ok', function (done) {
-    var sh = path.join(__dirname, 'cmddir', 'no_permission');
+    const sh = path.join(__dirname, 'cmddir', 'no_permission');
     utils.execFile(sh, function (err, stdout, stderr) {
       expect(err).to.be.ok();
       expect(err.code).to.be('EACCES');
@@ -44,7 +44,7 @@ describe('/lib/utils', function () {
   });
 
   it('getYYYYMMDD should ok', function () {
-    var date = new Date();
+    let date = new Date();
     date.setFullYear(1987);
     date.setMonth(9);
     date.setDate(12);
@@ -73,19 +73,19 @@ describe('/lib/utils', function () {
   });
 
   it('formatError should ok', function () {
-    var log = utils.formatError(new Error('just test'));
+    const log = utils.formatError(new Error('just test'));
     expect(log).to.contain('host: ' + os.hostname());
   });
 
   it('resolveYYYYMMDDHH should ok', function () {
-    var pad2 = utils.pad2;
-    var finalStr = utils.resolveYYYYMMDDHH('#YYYY#.log');
-    var now = new Date();
+    const pad2 = utils.pad2;
+    const finalStr = utils.resolveYYYYMMDDHH('#YYYY#.log');
+    const now = new Date();
     expect(finalStr).to.be(now.getFullYear() + '.log');
     expect(utils.resolveYYYYMMDDHH('#MM#')).to.be(pad2(now.getMonth() + 1));
     expect(utils.resolveYYYYMMDDHH('#DD#')).to.be(pad2(now.getDate()));
-    var str = '#YYYY##MM##DD#.log';
-    var expt = '' + now.getFullYear() + pad2(now.getMonth() + 1) +
+    let str = '#YYYY##MM##DD#.log';
+    let expt = '' + now.getFullYear() + pad2(now.getMonth() + 1) +
       utils.pad2(now.getDate());
     expect(utils.resolveYYYYMMDDHH(str)).to.be(expt + '.log');
     str = '#YYYY##MM##DD##HH#.log';
@@ -95,7 +95,7 @@ describe('/lib/utils', function () {
   });
 
   describe('mock networkInterfaces', function () {
-    var mock_stdout = {
+    const mock_stdout = {
       lo:
       [ { address: '127.0.0.1',
         netmask: '255.0.0.0',
@@ -131,7 +131,7 @@ describe('/lib/utils', function () {
     });
 
     it('should ok', function (done) {
-      var agentid = utils.getTagedAgentID('IP');
+      let agentid = utils.getTagedAgentID('IP');
       expect(agentid).to.be('NewHost_53100');
       agentid = utils.getTagedAgentID();
       expect(agentid).to.be('NewHost');

@@ -1,7 +1,7 @@
 'use strict';
 
-var path = require('path');
-var argv = process.argv.slice(2);
+const path = require('path');
+const argv = process.argv.slice(2);
 
 // exiting with parent process
 process.on('disconnect', function () {
@@ -9,8 +9,8 @@ process.on('disconnect', function () {
   process.exit(0);
 });
 
-var readConfig = function(confPath) {
-  var cfg = require(confPath);
+const readConfig = function(confPath) {
+  const cfg = require(confPath);
 
   if (!cfg.server ||
     !cfg.appid ||
@@ -38,7 +38,7 @@ process.on('uncaughtException', function (err) {
   process.exit(-1);
 });
 
-var Agent = require('./lib/agent');
-var confPath = path.resolve(argv[0]);
-var agent = new Agent(readConfig(confPath));
+const Agent = require('./lib/agent');
+const confPath = path.resolve(argv[0]);
+const agent = new Agent(readConfig(confPath));
 agent.run();

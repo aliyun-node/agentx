@@ -32,7 +32,9 @@
     "no-console": 0,
     "prefer-const": 2,
     "prefer-spread": 2,
-    "no-mixed-spaces-and-tabs": "error"
+    "no-mixed-spaces-and-tabs": "error",
+    "no-trailing-spaces": "warn",
+    "no-var": "warn"
   },
   "env": {
     "es6": true,
