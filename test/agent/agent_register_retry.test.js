@@ -1,5 +1,7 @@
 'use strict';
 
+const path = require('path');
+
 const expect = require('expect.js');
 const WebSocketServer = require('ws').Server;
 const Agent = require('../../lib/agent');
@@ -45,6 +47,7 @@ describe('/lib/agent -> register retry', function () {
         server: 'localhost:8991',
         appid: 1,
         secret: '2',
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
@@ -116,6 +119,7 @@ describe('/lib/agent -> register retry', function () {
         server: 'localhost:8991',
         appid: 1,
         secret: '2',
+        cmddir: path.join(__dirname, '../cmddir'),
         logger: {
           info: function () { },
           warn: function () { },
