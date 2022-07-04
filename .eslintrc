@@ -31,7 +31,8 @@
     "global-require": 0,
     "no-console": 0,
     "prefer-const": 2,
-    "prefer-spread": 2
+    "prefer-spread": 2,
+    "no-mixed-spaces-and-tabs": "error"
   },
   "env": {
     "es6": true,
